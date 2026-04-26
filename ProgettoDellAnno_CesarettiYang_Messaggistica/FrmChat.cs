@@ -16,5 +16,24 @@ namespace Messaggistica
         {
             InitializeComponent();
         }
+
+        private void btnInvia_Click(object sender, EventArgs e)
+        {
+            ClsMessaggio messaggio = new ClsMessaggio();
+            messaggio.Data = DateTime.Now;
+            messaggio.Testo = rtbMessaggio.Text;
+
+        }
+
+        private void btnAggiungiContatto_Click(object sender, EventArgs e)
+        {
+            FrmAggiungi frmAggiungi = new FrmAggiungi();
+            frmAggiungi.ShowDialog();
+        }
+
+        private void FrmMain_Load(object sender, EventArgs e)
+        {
+            lblNickname.Text = Program.io.Nickname;
+        }
     }
 }
