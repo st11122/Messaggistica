@@ -13,6 +13,7 @@ namespace Messaggistica
         private bool eliminatoDaMittente;
         private bool eliminatoDaDestinatario;
 
+
         public string Testo { get => testo; set => testo = value; }
         public DateTime Data { get => data; set => data = value; }
         public bool EliminatoDaMittente { get => eliminatoDaMittente; set => eliminatoDaMittente = value; }

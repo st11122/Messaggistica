@@ -8,18 +8,21 @@ namespace Messaggistica
 {
     public class ClsBloccare
     {
-        ClsUtente bloccato;
-        ClsUtente bloccatoDa;
+        long bloccato;
+        long bloccatoDa;
 
-        public ClsBloccare(ClsUtente bloccato, ClsUtente bloccatoDa)
+        public long Bloccato { get => bloccato; set => bloccato = value; }
+        public long BloccatoDa { get => bloccatoDa; set => bloccatoDa = value; }
+
+        public ClsBloccare(long bloccato, long bloccatoDa)
         {
-            this.bloccato = bloccato;
-            this.bloccatoDa = bloccatoDa;
+            this.Bloccato = bloccato;
+            this.BloccatoDa = bloccatoDa;
         }
 
         public ClsBloccare()
         {
-
+            
         }
     }
 }

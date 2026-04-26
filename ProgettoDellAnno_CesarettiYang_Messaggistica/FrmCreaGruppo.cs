@@ -16,5 +16,10 @@ namespace Messaggistica
         {
             InitializeComponent();
         }
+
+        private void btnCreaAggiungi_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

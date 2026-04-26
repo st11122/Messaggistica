@@ -49,6 +49,7 @@
             this.btnCreaAggiungi.TabIndex = 0;
             this.btnCreaAggiungi.Text = "Crea";
             this.btnCreaAggiungi.UseVisualStyleBackColor = true;
+            this.btnCreaAggiungi.Click += new System.EventHandler(this.btnCreaAggiungi_Click);
             // 
             // btnAnnulla
             // 
