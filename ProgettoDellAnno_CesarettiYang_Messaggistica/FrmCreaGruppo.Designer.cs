@@ -30,14 +30,15 @@
         {
             this.btnCreaAggiungi = new System.Windows.Forms.Button();
             this.btnAnnulla = new System.Windows.Forms.Button();
-            this.lblNumero = new System.Windows.Forms.Label();
-            this.mtbNumero = new System.Windows.Forms.MaskedTextBox();
+            this.lblID = new System.Windows.Forms.Label();
             this.lvContatti = new System.Windows.Forms.ListView();
             this.chNickname = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chNumero = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnCerca = new System.Windows.Forms.Button();
             this.lblNome = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.nudIDcontatto = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.nudIDcontatto)).BeginInit();
             this.SuspendLayout();
             // 
             // btnCreaAggiungi
@@ -61,25 +62,16 @@
             this.btnAnnulla.Text = "Annulla";
             this.btnAnnulla.UseVisualStyleBackColor = true;
             // 
-            // lblNumero
+            // lblID
             // 
-            this.lblNumero.AutoSize = true;
-            this.lblNumero.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNumero.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.lblNumero.Location = new System.Drawing.Point(12, 57);
-            this.lblNumero.Name = "lblNumero";
-            this.lblNumero.Size = new System.Drawing.Size(79, 24);
-            this.lblNumero.TabIndex = 2;
-            this.lblNumero.Text = "Numero";
-            // 
-            // mtbNumero
-            // 
-            this.mtbNumero.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mtbNumero.Location = new System.Drawing.Point(111, 54);
-            this.mtbNumero.Mask = "+00 0000000000";
-            this.mtbNumero.Name = "mtbNumero";
-            this.mtbNumero.Size = new System.Drawing.Size(150, 29);
-            this.mtbNumero.TabIndex = 4;
+            this.lblID.AutoSize = true;
+            this.lblID.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblID.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.lblID.Location = new System.Drawing.Point(12, 57);
+            this.lblID.Name = "lblID";
+            this.lblID.Size = new System.Drawing.Size(27, 24);
+            this.lblID.TabIndex = 2;
+            this.lblID.Text = "ID";
             // 
             // lvContatti
             // 
@@ -107,7 +99,7 @@
             // 
             // btnCerca
             // 
-            this.btnCerca.Location = new System.Drawing.Point(267, 57);
+            this.btnCerca.Location = new System.Drawing.Point(281, 57);
             this.btnCerca.Name = "btnCerca";
             this.btnCerca.Size = new System.Drawing.Size(75, 23);
             this.btnCerca.TabIndex = 6;
@@ -130,8 +122,16 @@
             this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox1.Location = new System.Drawing.Point(111, 15);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(150, 29);
+            this.textBox1.Size = new System.Drawing.Size(157, 29);
             this.textBox1.TabIndex = 8;
+            // 
+            // nudIDcontatto
+            // 
+            this.nudIDcontatto.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nudIDcontatto.Location = new System.Drawing.Point(111, 52);
+            this.nudIDcontatto.Name = "nudIDcontatto";
+            this.nudIDcontatto.Size = new System.Drawing.Size(157, 29);
+            this.nudIDcontatto.TabIndex = 15;
             // 
             // FrmCreaGruppo
             // 
@@ -139,16 +139,17 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Green;
             this.ClientSize = new System.Drawing.Size(368, 344);
+            this.Controls.Add(this.nudIDcontatto);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.lblNome);
             this.Controls.Add(this.btnCerca);
             this.Controls.Add(this.lvContatti);
-            this.Controls.Add(this.mtbNumero);
-            this.Controls.Add(this.lblNumero);
+            this.Controls.Add(this.lblID);
             this.Controls.Add(this.btnAnnulla);
             this.Controls.Add(this.btnCreaAggiungi);
             this.Name = "FrmCreaGruppo";
             this.Text = "Crea gruppo";
+            ((System.ComponentModel.ISupportInitialize)(this.nudIDcontatto)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -158,13 +159,13 @@
 
         private System.Windows.Forms.Button btnCreaAggiungi;
         private System.Windows.Forms.Button btnAnnulla;
-        private System.Windows.Forms.Label lblNumero;
-        private System.Windows.Forms.MaskedTextBox mtbNumero;
+        private System.Windows.Forms.Label lblID;
         private System.Windows.Forms.ListView lvContatti;
         private System.Windows.Forms.ColumnHeader chNickname;
         private System.Windows.Forms.ColumnHeader chNumero;
         private System.Windows.Forms.Button btnCerca;
         private System.Windows.Forms.Label lblNome;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.NumericUpDown nudIDcontatto;
     }
 }

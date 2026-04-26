@@ -78,7 +78,6 @@
             this.dtpDataDiNascita.Name = "dtpDataDiNascita";
             this.dtpDataDiNascita.Size = new System.Drawing.Size(394, 38);
             this.dtpDataDiNascita.TabIndex = 16;
-            this.dtpDataDiNascita.Visible = false;
             // 
             // lbDataDiNascita
             // 
@@ -89,7 +88,6 @@
             this.lbDataDiNascita.Size = new System.Drawing.Size(208, 33);
             this.lbDataDiNascita.TabIndex = 15;
             this.lbDataDiNascita.Text = "Data di nascita";
-            this.lbDataDiNascita.Visible = false;
             // 
             // lblNickname
             // 
@@ -100,7 +98,6 @@
             this.lblNickname.Size = new System.Drawing.Size(146, 33);
             this.lblNickname.TabIndex = 14;
             this.lblNickname.Text = "Nickname";
-            this.lblNickname.Visible = false;
             // 
             // tbNickname
             // 
@@ -109,7 +106,6 @@
             this.tbNickname.Name = "tbNickname";
             this.tbNickname.Size = new System.Drawing.Size(394, 40);
             this.tbNickname.TabIndex = 13;
-            this.tbNickname.Visible = false;
             // 
             // lblImpostazioni
             // 
@@ -153,7 +149,6 @@
             this.lblBiografia.Size = new System.Drawing.Size(130, 33);
             this.lblBiografia.TabIndex = 23;
             this.lblBiografia.Text = "Biografia";
-            this.lblBiografia.Visible = false;
             // 
             // rtbBiografia
             // 

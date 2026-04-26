@@ -49,16 +49,20 @@ namespace Messaggistica
 
         private void btnAccediRegistra_Click(object sender, EventArgs e)
         {
+
+            ClsUtente io = new ClsUtente();
+
+            io.Nickname = tbNickname.Text;
+            io.Password = tbPassword.Text;
+            io.Admin = 0;
+            io.DataDiNascita = dtpDataDiNascita.Value;
+            io.Descrizione = rtbBiografia.Text;
+
+            Program.io = io;
+
             this.Hide();
             FrmMain frmMain = new FrmMain();
             frmMain.ShowDialog();
-
-            ClsUtente io = new ClsUtente()
-            {
-                Nickname = tbNickname.Text();
-
-            }
-
         }
 
         private void cbMostraPassword_CheckedChanged(object sender, EventArgs e)
