@@ -43,6 +43,8 @@
             this.rtbMessaggio = new System.Windows.Forms.RichTextBox();
             this.btnInvia = new System.Windows.Forms.Button();
             this.btnAggiungi = new System.Windows.Forms.Button();
+            this.btnCreaGruppo = new System.Windows.Forms.Button();
+            this.btnTestDiConnessione = new System.Windows.Forms.Button();
             this.pnlElencoChat.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ptImpostazioni)).BeginInit();
             this.SuspendLayout();
@@ -50,6 +52,7 @@
             // pnlElencoChat
             // 
             this.pnlElencoChat.BackColor = System.Drawing.Color.Green;
+            this.pnlElencoChat.Controls.Add(this.btnCreaGruppo);
             this.pnlElencoChat.Controls.Add(this.ptImpostazioni);
             this.pnlElencoChat.Controls.Add(this.btnElimina);
             this.pnlElencoChat.Controls.Add(this.btnAggiungiContatto);
@@ -70,6 +73,7 @@
             this.ptImpostazioni.Size = new System.Drawing.Size(38, 35);
             this.ptImpostazioni.TabIndex = 0;
             this.ptImpostazioni.TabStop = false;
+            this.ptImpostazioni.Click += new System.EventHandler(this.ptImpostazioni_Click);
             // 
             // btnElimina
             // 
@@ -190,6 +194,29 @@
             this.btnAggiungi.Text = "Aggiungi";
             this.btnAggiungi.UseVisualStyleBackColor = false;
             this.btnAggiungi.Visible = false;
+            this.btnAggiungi.Click += new System.EventHandler(this.btnAggiungi_Click);
+            // 
+            // btnCreaGruppo
+            // 
+            this.btnCreaGruppo.BackColor = System.Drawing.Color.Transparent;
+            this.btnCreaGruppo.Location = new System.Drawing.Point(69, 386);
+            this.btnCreaGruppo.Name = "btnCreaGruppo";
+            this.btnCreaGruppo.Size = new System.Drawing.Size(60, 60);
+            this.btnCreaGruppo.TabIndex = 8;
+            this.btnCreaGruppo.Text = "Crea gruppo";
+            this.btnCreaGruppo.UseVisualStyleBackColor = false;
+            this.btnCreaGruppo.Click += new System.EventHandler(this.btnCreaGruppo_Click);
+            // 
+            // btnTestDiConnessione
+            // 
+            this.btnTestDiConnessione.BackColor = System.Drawing.Color.Transparent;
+            this.btnTestDiConnessione.Location = new System.Drawing.Point(471, 12);
+            this.btnTestDiConnessione.Name = "btnTestDiConnessione";
+            this.btnTestDiConnessione.Size = new System.Drawing.Size(60, 48);
+            this.btnTestDiConnessione.TabIndex = 9;
+            this.btnTestDiConnessione.Text = "Test di connessione";
+            this.btnTestDiConnessione.UseVisualStyleBackColor = false;
+            this.btnTestDiConnessione.Click += new System.EventHandler(this.btnTestDiConnessione_Click);
             // 
             // FrmMain
             // 
@@ -197,6 +224,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnTestDiConnessione);
             this.Controls.Add(this.btnAggiungi);
             this.Controls.Add(this.btnInvia);
             this.Controls.Add(this.rtbMessaggio);
@@ -231,6 +259,8 @@
         private System.Windows.Forms.Button btnAggiungiContatto;
         private System.Windows.Forms.Button btnAggiungi;
         private System.Windows.Forms.PictureBox ptImpostazioni;
+        private System.Windows.Forms.Button btnCreaGruppo;
+        private System.Windows.Forms.Button btnTestDiConnessione;
     }
 }
 

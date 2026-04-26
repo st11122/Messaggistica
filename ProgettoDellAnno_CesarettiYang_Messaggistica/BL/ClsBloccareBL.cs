@@ -40,9 +40,14 @@ namespace Messaggistica
                 cmd.Parameters.AddWithValue("@bloccato", clsBloccare.Bloccato);
                 cmd.Parameters.AddWithValue("@bloccatoda", clsBloccare.BloccatoDa);
 
+                int _righeInserite = cmd.ExecuteNonQuery();
+
+                if (_righeInserite == 0)
+                    errore = "Nessuna riga inserita";
+
                 conn.Close();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 errore = ex.Message;
             }

@@ -104,43 +104,56 @@ namespace Messaggistica
         #endregion
 
         #region PRENDI CONTATTI DAL NICKNAME
-        public List<ClsUtente> prendiNickname(string nickname, ref string errore)
+        public List<ClsUtente> prendiNickname(ref MySqlConnection conn, string nickname, ref string errore)
         {
-            DataTable dt = null;
+            DataTable dt = new DataTable();
             List<ClsUtente> _listaUtenti = null;
 
             try
             {
+                //apro la connessione
+                conn.Open();
                 //Query
                 string query = "SELECT * FROM aggiungere WHERE nickname=@nickname";
 
                 //Costruisco la lista dei parametri
                 MySqlParameter[] parametri = { new MySqlParameter("@nickname", nickname) };
+                MySqlCommand cmd = new MySqlCommand(query, conn);
 
-                dt = _dbm.GetDataTableByQuery(query, null, ref errore);
+                //Creo il comando
+                cmd.Parameters.AddRange(parametri);
 
+                //creo il dataAdapter
+                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+                da.Fill(dt);
+
+                //Creo la lista con gli utenti
                 if (string.IsNullOrEmpty(errore))
                 {
-                    _listaLibri = new List<ClsLibro>();
+                    _listaUtenti = new List<ClsUtente>();
 
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
-                        ClsLibro _libro = new ClsLibro(
-                            (int)dt.Rows[i]["id"],
-                            dt.Rows[i]["isbn"].ToString(),
-                            dt.Rows[i]["autore"].ToString(),
-                            dt.Rows[i]["titolo"].ToString(),
-                            (decimal)dt.Rows[i]["prezzo"]);
-                        _listaLibri.Add(_libro);
+                        ClsUtente _utente = new ClsUtente(
+                            (int)dt.Rows[i]["ID"],
+                            dt.Rows[i]["descrizione"].ToString(),
+                            dt.Rows[i]["nickname"].ToString(),
+                            dt.Rows[i]["password"].ToString(),
+                            (DateTime)dt.Rows[i]["datadinascita"],
+                            (byte)dt.Rows[i]["admin"]);
+                        _listaUtenti.Add(_utente);
                     }
                 }
+
+                //chiudo la connessione
+                conn.Close();
             }
             catch (Exception ex)
             {
                 errore = ex.Message;
             }
 
-            return _listaLibri;
+            return _listaUtenti;
 
         } 
         #endregion
@@ -159,7 +172,6 @@ namespace Messaggistica
                 string sql = "INSERT INTO aggiungere (nickname, utenteID, contattoID) VALUES (@nickname, @utenteID, @contattoID)";
 
                 //creo l'oggetto command
-
                 MySqlCommand cmd = new MySqlCommand(sql, conn);
 
                 //assegno i valori
@@ -167,33 +179,10 @@ namespace Messaggistica
                 cmd.Parameters.AddWithValue("@utenteID", utenteID);
                 cmd.Parameters.AddWithValue("@contattoID", contattoID);
 
-                conn.Close();
-            }
-            catch (Exception ex)
-            {
-                errore = ex.Message;
-            }
-        }
-        #endregion
+                int _righeInserite = cmd.ExecuteNonQuery();
 
-        #region BLOCCARE
-        void Bloccare(MySqlConnection conn, ClsBloccare clsBloccare, out string errore)
-        {
-            errore = String.Empty;
-
-            try
-            {
-                //apro la connessione
-                conn.Open();
-
-                //creo la query
-                string sql = "INSERT INTO bloccare (bloccato, bloccatoda) VALUES (@bloccato, @bloccatoda)";
-
-                //creo l'oggetto command
-                MySqlCommand cmd = new MySqlCommand(sql, conn);
-
-                cmd.Parameters.AddWithValue("@bloccato", clsBloccare.Bloccato);
-                cmd.Parameters.AddWithValue("@bloccatoda", clsBloccare.BloccatoDa);
+                if (_righeInserite == 0)
+                    errore = "Nessuna riga inserita";
 
                 conn.Close();
             }
