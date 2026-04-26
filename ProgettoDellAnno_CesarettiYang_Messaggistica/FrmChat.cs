@@ -36,7 +36,31 @@ namespace Messaggistica
         {
             //stampo il proprio nome utente sulla form main
             lblNickname.Text = Program.io.Nickname;
+
+            MySqlConnection conn = new MySqlConnection(Program.connectionString);
+
+            //prendo i contatti e li metto nel program
+            Program.Contatti = ClsUtenteBL.getAllContact(ref conn, Program.io.ID, out string errore);
+            if (string.IsNullOrWhiteSpace(errore))
+                PopolaListView(Program.Contatti);
+            else
+                MessageBox.Show($"Errore nel caricamento dei contatti\n {errore}", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+
+        #region POPOLA LIST VIEW
+        private void PopolaListView(List<ClsUtente> contatti)
+        {
+            //popolo la listView
+            lvElencoChat.Items.Clear();
+
+            foreach(ClsUtente utente in contatti)
+            {
+                ListViewItem lvi = new ListViewItem(utente.Nickname);
+                lvi.Tag = utente;
+                lvElencoChat.Items.Add(lvi);
+            }
+        }
+        #endregion
 
         private void ptImpostazioni_Click(object sender, EventArgs e)
         {

@@ -13,7 +13,7 @@ namespace Messaggistica
         private string _nickname;
         private string _password;
         private DateTime _dataDiNascita;
-        private byte _admin;
+        private bool _admin;
 
        
 
@@ -22,12 +22,12 @@ namespace Messaggistica
         public string Nickname { get => _nickname; set => _nickname = value; }
         public DateTime DataDiNascita { get => _dataDiNascita; set => _dataDiNascita = value; }
         public string Password { get => _password; set => _password = value; }
-        public byte Admin { get => _admin; set => _admin = value; }
+        public bool Admin { get => _admin; set => _admin = value; }
 
         // Costruttore della classe Utente
         public ClsUtente() { }
 
-        public ClsUtente(long ID, string descrizione, string nickname, string password, DateTime dataDiNascita, byte admin)
+        public ClsUtente(long ID, string descrizione, string nickname, string password, DateTime dataDiNascita, bool admin)
         {
             _ID = ID;
             _descrizione = descrizione;

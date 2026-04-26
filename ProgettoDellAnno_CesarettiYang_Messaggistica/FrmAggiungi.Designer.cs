@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.tbNickname = new System.Windows.Forms.TextBox();
             this.lblNome = new System.Windows.Forms.Label();
             this.lblIDcontatto = new System.Windows.Forms.Label();
             this.btnAnnulla = new System.Windows.Forms.Button();
@@ -37,13 +37,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudIDcontatto)).BeginInit();
             this.SuspendLayout();
             // 
-            // textBox1
+            // tbNickname
             // 
-            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(199, 12);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(157, 29);
-            this.textBox1.TabIndex = 13;
+            this.tbNickname.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbNickname.Location = new System.Drawing.Point(199, 12);
+            this.tbNickname.Name = "tbNickname";
+            this.tbNickname.Size = new System.Drawing.Size(157, 29);
+            this.tbNickname.TabIndex = 13;
             // 
             // lblNome
             // 
@@ -76,6 +76,7 @@
             this.btnAnnulla.TabIndex = 10;
             this.btnAnnulla.Text = "Annulla";
             this.btnAnnulla.UseVisualStyleBackColor = true;
+            this.btnAnnulla.Click += new System.EventHandler(this.btnAnnulla_Click);
             // 
             // btnAggiungi
             // 
@@ -92,6 +93,11 @@
             // 
             this.nudIDcontatto.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nudIDcontatto.Location = new System.Drawing.Point(199, 58);
+            this.nudIDcontatto.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
             this.nudIDcontatto.Name = "nudIDcontatto";
             this.nudIDcontatto.Size = new System.Drawing.Size(157, 29);
             this.nudIDcontatto.TabIndex = 14;
@@ -103,7 +109,7 @@
             this.BackColor = System.Drawing.Color.Green;
             this.ClientSize = new System.Drawing.Size(373, 147);
             this.Controls.Add(this.nudIDcontatto);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.tbNickname);
             this.Controls.Add(this.lblNome);
             this.Controls.Add(this.lblIDcontatto);
             this.Controls.Add(this.btnAnnulla);
@@ -118,7 +124,7 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox tbNickname;
         private System.Windows.Forms.Label lblNome;
         private System.Windows.Forms.Label lblIDcontatto;
         private System.Windows.Forms.Button btnAnnulla;
