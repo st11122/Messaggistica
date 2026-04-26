@@ -51,6 +51,7 @@
             this.cbMostraPassword.TabIndex = 19;
             this.cbMostraPassword.Text = "Mostra password";
             this.cbMostraPassword.UseVisualStyleBackColor = true;
+            this.cbMostraPassword.CheckedChanged += new System.EventHandler(this.cbMostraPassword_CheckedChanged);
             // 
             // lblPassword
             // 
@@ -178,6 +179,7 @@
             this.Controls.Add(this.tbNickname);
             this.Name = "FrmImpostazioneUtente";
             this.Text = "FrmImpostazioneUtente";
+            this.Load += new System.EventHandler(this.FrmImpostazioneUtente_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

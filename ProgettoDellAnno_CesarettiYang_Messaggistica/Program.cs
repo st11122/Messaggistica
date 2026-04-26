@@ -11,14 +11,14 @@ namespace Messaggistica
     {
 
         public static ClsUtente io = new ClsUtente();
-
+        public static string connectionString = Properties.Settings.Default.dbConnString;
+        public static List<ClsUtente> Contatti = new List<ClsUtente>();
         /// <summary>
         /// Punto di ingresso principale dell'applicazione.
         /// </summary>
         [STAThread]
         static void Main()
         {
-            //prendo le mie informazioni e le metto in una variabile
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FrmLoginRegistra());

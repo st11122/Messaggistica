@@ -75,15 +75,16 @@ namespace Messaggistica
                 conn.Open();
 
                 //creo la query
-                string sql = "INSERT INTO utenti (nickname, password, datadinascita, descrizione, admin) VALUES (@descrizone, @nickname, @datadinascita, @admin)";
+                string sql = "INSERT INTO utenti (nickname, password, biografia, datadinascita, admin) VALUES (@nickname, @password, @biografia, @datadinascita, @admin)";
 
                 //creo l'oggetto command
 
                 MySqlCommand cmd = new MySqlCommand(sql, conn);
 
                 //assegno i valori
-                cmd.Parameters.AddWithValue("@descrizione", utente.Descrizione);
                 cmd.Parameters.AddWithValue("@nickname", utente.Nickname);
+                cmd.Parameters.AddWithValue("@password", utente.Password);
+                cmd.Parameters.AddWithValue("@biografia", utente.Descrizione);
                 cmd.Parameters.AddWithValue("@datadinascita", utente.DataDiNascita);
                 cmd.Parameters.AddWithValue("@admin", utente.Admin);
 
@@ -103,8 +104,52 @@ namespace Messaggistica
         }
         #endregion
 
+        #region ACCEDI
+        internal static ClsUtente Login(ref MySqlConnection conn, string nickname, string password, ref string errore)
+        {
+            //creo l'utente per i dati
+            ClsUtente io = null;
+
+            try
+            {
+                //apro la connessione
+                conn.Open();
+
+                //query
+                string query = "SELECT * FROM utenti WHERE nickname = @nickname AND password = @password";
+
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+
+                cmd.Parameters.AddWithValue("@nickname", nickname);
+                cmd.Parameters.AddWithValue("@password", password);
+
+                MySqlDataReader dr = cmd.ExecuteReader();
+                if (dr.Read())
+                {
+                    io = new ClsUtente();
+                    io.ID = dr.GetUInt32("ID");
+                    io.Nickname = dr.GetString("nickname");
+                    io.Password = dr.GetString("password");
+                    io.Descrizione = dr.GetString("biografia");
+                    io.DataDiNascita = dr.GetDateTime("datadinascita");
+                    io.Admin = dr.GetBoolean("admin");
+                }
+                else
+                    errore = "Nickname o password errati";
+
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                errore = ex.Message;
+            }
+
+            return io;
+        }
+        #endregion
+
         #region PRENDI CONTATTI DAL NICKNAME
-        public List<ClsUtente> prendiNickname(ref MySqlConnection conn, string nickname, ref string errore)
+        internal static List<ClsUtente> prendiNickname(ref MySqlConnection conn, string nickname, ref string errore)
         {
             DataTable dt = new DataTable();
             List<ClsUtente> _listaUtenti = null;
@@ -140,7 +185,7 @@ namespace Messaggistica
                             dt.Rows[i]["nickname"].ToString(),
                             dt.Rows[i]["password"].ToString(),
                             (DateTime)dt.Rows[i]["datadinascita"],
-                            (byte)dt.Rows[i]["admin"]);
+                            (bool)dt.Rows[i]["admin"]);
                         _listaUtenti.Add(_utente);
                     }
                 }
@@ -160,7 +205,7 @@ namespace Messaggistica
 
         #region AGGIUNGERE
 
-        void Aggiungere(ref MySqlConnection conn, string nickname, long utenteID, long contattoID , out string errore)
+        internal static void Aggiungere(ref MySqlConnection conn, string nickname, long utenteID, long contattoID , out string errore)
         {
             errore = String.Empty;
 
@@ -170,6 +215,7 @@ namespace Messaggistica
                 conn.Open();
                 //query
                 string sql = "INSERT INTO aggiungere (nickname, utenteID, contattoID) VALUES (@nickname, @utenteID, @contattoID)";
+                string sql2 = "INSERT INTO aggiungere (nickname, utenteID, contattoID) VALUES (@nickname, @contattoID, @utenteID)";
 
                 //creo l'oggetto command
                 MySqlCommand cmd = new MySqlCommand(sql, conn);
@@ -179,9 +225,15 @@ namespace Messaggistica
                 cmd.Parameters.AddWithValue("@utenteID", utenteID);
                 cmd.Parameters.AddWithValue("@contattoID", contattoID);
 
-                int _righeInserite = cmd.ExecuteNonQuery();
+                MySqlCommand cmd2 = new MySqlCommand(sql2, conn);
+                cmd2.Parameters.AddWithValue("@nickname", $"Contatto sconosciuto {Program.io.ID}");
+                cmd2.Parameters.AddWithValue("@utenteID", utenteID);
+                cmd2.Parameters.AddWithValue("@contattoID", contattoID);
 
-                if (_righeInserite == 0)
+                int _righeInserite = cmd.ExecuteNonQuery();
+                int _righeInserite2 = cmd2.ExecuteNonQuery();
+
+                if (_righeInserite == 0 && _righeInserite2 == 0)
                     errore = "Nessuna riga inserita";
 
                 conn.Close();
@@ -191,6 +243,114 @@ namespace Messaggistica
                 errore = ex.Message;
             }
         }
+        #endregion
+        
+        #region PRENDI CONTATTI
+        internal static List<ClsUtente> getAllContact(ref MySqlConnection conn, long id, out string errore)
+        {
+            List<ClsUtente> contatti = new List<ClsUtente>();
+            errore = String.Empty;
+
+            try
+            {
+                //apro la connessione
+                conn.Open();
+
+                //query
+                string query = "SELECT contattoID FROM aggiungere WHERE utenteID = ?id";
+
+                //creo il comando
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+
+                //prendo il mio id
+                cmd.Parameters.AddWithValue("?id", id);
+
+                //Creo il data reader e la lista degli ID dei contatti
+                MySqlDataReader dr = cmd.ExecuteReader();
+                List<long> contattiID = new List<long>();
+
+                //ciclo finche non trovo tutti i miei contatti
+                while(dr.Read())
+                {
+                    contattiID.Add(dr.GetInt32("contattoID"));
+                }
+
+                dr.Close();
+                cmd.Dispose();
+
+                if (contattiID.Count > 0)
+                {
+                    string query2 = "SELECT * FROM utenti WHERE ID = @id";
+                    cmd = new MySqlCommand(query2, conn);
+                    foreach (long contattoId in contattiID)
+                    {
+                        cmd.Parameters.AddWithValue("@id", contattoId);
+                        dr = cmd.ExecuteReader();
+
+                        if (dr.Read())
+                        {
+                            ClsUtente utente = new ClsUtente();
+                            utente.ID = dr.GetInt32("ID");
+                            utente.Nickname = dr.GetString("nickname");
+                            utente.Password = dr.GetString("password");
+                            utente.Descrizione = dr.GetString("biografia");
+                            utente.DataDiNascita = dr.GetDateTime("datadinascita");
+                            utente.Admin = dr.GetBoolean("admin");
+
+                            contatti.Add(utente);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                errore = ex.Message;
+            }
+
+            return contatti;
+        }
+
+        #endregion
+
+        #region MODIFICA
+        internal static void Modifica(MySqlConnection conn, ClsUtente io, out string errore)
+        {
+            errore = String.Empty;
+
+            try
+            {
+                //apro la connessione
+                conn.Open();
+
+                //creo la query
+                string query = "UPDATE utenti SET nickname = @nickname, password = @password, biografia = @biografia, datadinascita = @datadinascita WHERE id=@id";
+
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+
+                //modifico i parametri
+                MySqlParameter[] parametri = {
+                    cmd.Parameters.AddWithValue("@id", io.ID),
+                    cmd.Parameters.AddWithValue("@nickname", io.Nickname),
+                    cmd.Parameters.AddWithValue("@password", io.Password),
+                    cmd.Parameters.AddWithValue("@biografia", io.Descrizione),
+                    cmd.Parameters.AddWithValue("@datadinascita", io.DataDiNascita)
+                };
+
+                //eseguo la query
+                int _righeModificate = cmd.ExecuteNonQuery();
+
+                //controllo se le modifiche sono state apportate
+                if (_righeModificate < 1)
+                    errore = "Modifica non apportata";
+                else
+                    Program.io = io;    //modifico il mio utente
+            }
+            catch (Exception ex)
+            {
+                errore = ex.Message;
+            }
+        }
+
         #endregion
 
         #endregion

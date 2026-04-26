@@ -20,18 +20,20 @@ namespace Messaggistica
 
         private void btnAggiungi_Click(object sender, EventArgs e)
         {
-            /*
-            // App.config
-            string connectionString = ConfigurationManager.ConnectionStrings["messaggistica"].ConnectionString;
-            // Properties > Settings
-            //string connectionString = Properties.Settings.Default.dbConnString;
-            MySqlConnection conn = new MySqlConnection(connectionString);
-            string errore = "";
+            MySqlConnection conn = new MySqlConnection(Program.connectionString);
 
-            ClsUtente utente = new ClsUtente();
+            ClsUtenteBL.Aggiungere(ref conn, tbNickname.Text, Program.io.ID, (long)nudIDcontatto.Value, out string errore);
+            if (string.IsNullOrWhiteSpace(errore))
+                MessageBox.Show("Contatto aggiunto con successo");
+            else
+                MessageBox.Show(errore, "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-            utente.ID = ClsUtenteBL.Create(ref conn, clsLibro, out errore);
-            MessageBox.Show($"ID generato: {clsLibro.ID}"); */
+            this.Close();
+        }
+
+        private void btnAnnulla_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
