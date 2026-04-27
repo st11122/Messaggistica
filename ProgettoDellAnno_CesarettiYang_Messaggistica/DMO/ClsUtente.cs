@@ -14,7 +14,6 @@ namespace Messaggistica
         private string _password;
         private DateTime _dataDiNascita;
         private bool _admin;
-
        
 
         public long ID { get => _ID; set => _ID = value; }
