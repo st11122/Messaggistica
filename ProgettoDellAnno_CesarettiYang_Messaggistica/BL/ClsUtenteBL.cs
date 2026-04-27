@@ -200,43 +200,43 @@ namespace Messaggistica
 
             return _listaUtenti;
 
-        } 
+        }
         #endregion
 
-        #region AGGIUNGERE
-
-        internal static void Aggiungere(ref MySqlConnection conn, string nickname, long utenteID, long contattoID , out string errore)
+        #region PRENDI CONTATTI
+        internal static void getAllIDContact(ref MySqlConnection conn, long id, out string errore)
         {
+            List<long> contattiID = new List<long>();
             errore = String.Empty;
 
             try
             {
                 //apro la connessione
                 conn.Open();
+
                 //query
-                string sql = "INSERT INTO aggiungere (nickname, utenteID, contattoID) VALUES (@nickname, @utenteID, @contattoID)";
-                string sql2 = "INSERT INTO aggiungere (nickname, utenteID, contattoID) VALUES (@nickname, @contattoID, @utenteID)";
+                string query = "SELECT contattoID FROM aggiungere WHERE utenteID = @id";
 
-                //creo l'oggetto command
-                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                //creo il comando
+                MySqlCommand cmd = new MySqlCommand(query, conn);
 
-                //assegno i valori
-                cmd.Parameters.AddWithValue("@nickname", nickname);
-                cmd.Parameters.AddWithValue("@utenteID", utenteID);
-                cmd.Parameters.AddWithValue("@contattoID", contattoID);
+                //prendo il mio id
+                cmd.Parameters.AddWithValue("@id", id);
 
-                MySqlCommand cmd2 = new MySqlCommand(sql2, conn);
-                cmd2.Parameters.AddWithValue("@nickname", $"Contatto sconosciuto {Program.io.ID}");
-                cmd2.Parameters.AddWithValue("@utenteID", utenteID);
-                cmd2.Parameters.AddWithValue("@contattoID", contattoID);
+                //Creo il data reader e la lista degli ID dei contatti
+                MySqlDataReader dr = cmd.ExecuteReader();
 
-                int _righeInserite = cmd.ExecuteNonQuery();
-                int _righeInserite2 = cmd2.ExecuteNonQuery();
+                //ciclo finche non trovo tutti i miei contatti
+                while (dr.Read())
+                {
+                    contattiID.Add(dr.GetInt32("contattoID"));
+                }
 
-                if (_righeInserite == 0 && _righeInserite2 == 0)
-                    errore = "Nessuna riga inserita";
-
+                dr.Close();
+                cmd.Dispose();
                 conn.Close();
+
+                Program.contattiID = contattiID;
             }
             catch (Exception ex)
             {
@@ -244,48 +244,25 @@ namespace Messaggistica
             }
         }
         #endregion
-        
-        #region PRENDI CONTATTI
+
+        #region GET ALL CONTACT
         internal static List<ClsUtente> getAllContact(ref MySqlConnection conn, long id, out string errore)
         {
             List<ClsUtente> contatti = new List<ClsUtente>();
             errore = String.Empty;
-
             try
             {
-                //apro la connessione
                 conn.Open();
 
-                //query
-                string query = "SELECT contattoID FROM aggiungere WHERE utenteID = ?id";
-
-                //creo il comando
-                MySqlCommand cmd = new MySqlCommand(query, conn);
-
-                //prendo il mio id
-                cmd.Parameters.AddWithValue("?id", id);
-
-                //Creo il data reader e la lista degli ID dei contatti
-                MySqlDataReader dr = cmd.ExecuteReader();
-                List<long> contattiID = new List<long>();
-
-                //ciclo finche non trovo tutti i miei contatti
-                while(dr.Read())
+                if (Program.contattiID.Count > 0)
                 {
-                    contattiID.Add(dr.GetInt32("contattoID"));
-                }
-
-                dr.Close();
-                cmd.Dispose();
-
-                if (contattiID.Count > 0)
-                {
-                    string query2 = "SELECT * FROM utenti WHERE ID = @id";
-                    cmd = new MySqlCommand(query2, conn);
-                    foreach (long contattoId in contattiID)
+                    foreach (long contattoId in Program.contattiID)
                     {
+                        string query = "SELECT * FROM utenti WHERE ID = @id";
+                        MySqlCommand cmd = new MySqlCommand(query, conn);
+
                         cmd.Parameters.AddWithValue("@id", contattoId);
-                        dr = cmd.ExecuteReader();
+                        MySqlDataReader dr = cmd.ExecuteReader();
 
                         if (dr.Read())
                         {
@@ -299,8 +276,14 @@ namespace Messaggistica
 
                             contatti.Add(utente);
                         }
+
+                        dr.Close();
+                        cmd.Dispose();
+
                     }
+
                 }
+                conn.Close();
             }
             catch (Exception ex)
             {

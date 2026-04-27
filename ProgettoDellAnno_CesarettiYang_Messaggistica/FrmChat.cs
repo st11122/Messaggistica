@@ -30,6 +30,14 @@ namespace Messaggistica
         {
             FrmAggiungi frmAggiungi = new FrmAggiungi();
             frmAggiungi.ShowDialog();
+
+            MySqlConnection conn = new MySqlConnection(Program.connectionString);
+
+            //prendo i contatti e li metto nel program
+            string errore = "";
+            ClsUtenteBL.getAllIDContact(ref conn, Program.io.ID, out errore);
+            Program.Contatti = ClsUtenteBL.getAllContact(ref conn, Program.io.ID, out errore);
+            PopolaListView(Program.Contatti);   //popolo la listView
         }
 
         private void FrmMain_Load(object sender, EventArgs e)
@@ -40,7 +48,9 @@ namespace Messaggistica
             MySqlConnection conn = new MySqlConnection(Program.connectionString);
 
             //prendo i contatti e li metto nel program
-            Program.Contatti = ClsUtenteBL.getAllContact(ref conn, Program.io.ID, out string errore);
+            string errore = "";
+            ClsUtenteBL.getAllIDContact(ref conn, Program.io.ID, out errore);
+            Program.Contatti = ClsUtenteBL.getAllContact(ref conn, Program.io.ID, out errore);
             if (string.IsNullOrWhiteSpace(errore))
                 PopolaListView(Program.Contatti);
             else
@@ -56,7 +66,7 @@ namespace Messaggistica
             foreach(ClsUtente utente in contatti)
             {
                 ListViewItem lvi = new ListViewItem(utente.Nickname);
-                lvi.Tag = utente;
+                lvi.Tag = utente.ID;
                 lvElencoChat.Items.Add(lvi);
             }
         }
@@ -99,6 +109,13 @@ namespace Messaggistica
             {
                 conn.Close();
             }
+        }
+
+        private void lblNomeGruppoOChat_Click(object sender, EventArgs e)
+        {
+            //Program.utente = lvElencoChat.SelectedItems[]
+            FrmImpostazioneUtente frmImpostazioneUtente = new FrmImpostazioneUtente();
+            frmImpostazioneUtente.ShowDialog();
         }
     }
 }

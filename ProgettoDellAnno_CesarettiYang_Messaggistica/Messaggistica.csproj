@@ -83,6 +83,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BL\ClsAggiungereBL.cs" />
     <Compile Include="BL\ClsBloccareBL.cs" />
     <Compile Include="BL\ClsUtenteBL.cs" />
     <Compile Include="FrmAggiungi.cs">
