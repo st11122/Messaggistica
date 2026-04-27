@@ -29,12 +29,11 @@
         private void InitializeComponent()
         {
             this.pnlElencoChat = new System.Windows.Forms.Panel();
+            this.btnCreaGruppo = new System.Windows.Forms.Button();
             this.ptImpostazioni = new System.Windows.Forms.PictureBox();
             this.btnElimina = new System.Windows.Forms.Button();
             this.btnAggiungiContatto = new System.Windows.Forms.Button();
             this.lblNickname = new System.Windows.Forms.Label();
-            this.lvElencoChat = new System.Windows.Forms.ListView();
-            this.chChat = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lvChat = new System.Windows.Forms.ListView();
             this.chMessaggioInterlocutore = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chMessaggio1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -43,8 +42,9 @@
             this.rtbMessaggio = new System.Windows.Forms.RichTextBox();
             this.btnInvia = new System.Windows.Forms.Button();
             this.btnAggiungi = new System.Windows.Forms.Button();
-            this.btnCreaGruppo = new System.Windows.Forms.Button();
             this.btnTestDiConnessione = new System.Windows.Forms.Button();
+            this.chChat = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.lvElencoChat = new System.Windows.Forms.ListView();
             this.pnlElencoChat.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ptImpostazioni)).BeginInit();
             this.SuspendLayout();
@@ -64,6 +64,17 @@
             this.pnlElencoChat.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.pnlElencoChat.Size = new System.Drawing.Size(200, 450);
             this.pnlElencoChat.TabIndex = 0;
+            // 
+            // btnCreaGruppo
+            // 
+            this.btnCreaGruppo.BackColor = System.Drawing.Color.Transparent;
+            this.btnCreaGruppo.Location = new System.Drawing.Point(69, 386);
+            this.btnCreaGruppo.Name = "btnCreaGruppo";
+            this.btnCreaGruppo.Size = new System.Drawing.Size(60, 60);
+            this.btnCreaGruppo.TabIndex = 8;
+            this.btnCreaGruppo.Text = "Crea gruppo";
+            this.btnCreaGruppo.UseVisualStyleBackColor = false;
+            this.btnCreaGruppo.Click += new System.EventHandler(this.btnCreaGruppo_Click);
             // 
             // ptImpostazioni
             // 
@@ -107,23 +118,6 @@
             this.lblNickname.TabIndex = 4;
             this.lblNickname.Text = "<Nickname>";
             // 
-            // lvElencoChat
-            // 
-            this.lvElencoChat.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.chChat});
-            this.lvElencoChat.HideSelection = false;
-            this.lvElencoChat.Location = new System.Drawing.Point(3, 66);
-            this.lvElencoChat.Name = "lvElencoChat";
-            this.lvElencoChat.Size = new System.Drawing.Size(194, 314);
-            this.lvElencoChat.TabIndex = 1;
-            this.lvElencoChat.UseCompatibleStateImageBehavior = false;
-            this.lvElencoChat.View = System.Windows.Forms.View.Details;
-            // 
-            // chChat
-            // 
-            this.chChat.Text = "Chat";
-            this.chChat.Width = 188;
-            // 
             // lvChat
             // 
             this.lvChat.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
@@ -163,6 +157,7 @@
             this.lblNomeGruppoOChat.Size = new System.Drawing.Size(187, 24);
             this.lblNomeGruppoOChat.TabIndex = 3;
             this.lblNomeGruppoOChat.Text = "<nome gruppo/chat>";
+            this.lblNomeGruppoOChat.Click += new System.EventHandler(this.lblNomeGruppoOChat_Click);
             // 
             // rtbMessaggio
             // 
@@ -196,17 +191,6 @@
             this.btnAggiungi.Visible = false;
             this.btnAggiungi.Click += new System.EventHandler(this.btnAggiungi_Click);
             // 
-            // btnCreaGruppo
-            // 
-            this.btnCreaGruppo.BackColor = System.Drawing.Color.Transparent;
-            this.btnCreaGruppo.Location = new System.Drawing.Point(69, 386);
-            this.btnCreaGruppo.Name = "btnCreaGruppo";
-            this.btnCreaGruppo.Size = new System.Drawing.Size(60, 60);
-            this.btnCreaGruppo.TabIndex = 8;
-            this.btnCreaGruppo.Text = "Crea gruppo";
-            this.btnCreaGruppo.UseVisualStyleBackColor = false;
-            this.btnCreaGruppo.Click += new System.EventHandler(this.btnCreaGruppo_Click);
-            // 
             // btnTestDiConnessione
             // 
             this.btnTestDiConnessione.BackColor = System.Drawing.Color.Transparent;
@@ -217,6 +201,24 @@
             this.btnTestDiConnessione.Text = "Test di connessione";
             this.btnTestDiConnessione.UseVisualStyleBackColor = false;
             this.btnTestDiConnessione.Click += new System.EventHandler(this.btnTestDiConnessione_Click);
+            // 
+            // chChat
+            // 
+            this.chChat.Text = "Chat";
+            this.chChat.Width = 188;
+            // 
+            // lvElencoChat
+            // 
+            this.lvElencoChat.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.chChat});
+            this.lvElencoChat.FullRowSelect = true;
+            this.lvElencoChat.HideSelection = false;
+            this.lvElencoChat.Location = new System.Drawing.Point(3, 66);
+            this.lvElencoChat.Name = "lvElencoChat";
+            this.lvElencoChat.Size = new System.Drawing.Size(194, 314);
+            this.lvElencoChat.TabIndex = 1;
+            this.lvElencoChat.UseCompatibleStateImageBehavior = false;
+            this.lvElencoChat.View = System.Windows.Forms.View.Details;
             // 
             // FrmMain
             // 
@@ -245,8 +247,6 @@
         #endregion
 
         private System.Windows.Forms.Panel pnlElencoChat;
-        private System.Windows.Forms.ListView lvElencoChat;
-        private System.Windows.Forms.ColumnHeader chChat;
         private System.Windows.Forms.ListView lvChat;
         private System.Windows.Forms.ColumnHeader chMessaggioInterlocutore;
         private System.Windows.Forms.Label lblNickname;
@@ -261,6 +261,8 @@
         private System.Windows.Forms.PictureBox ptImpostazioni;
         private System.Windows.Forms.Button btnCreaGruppo;
         private System.Windows.Forms.Button btnTestDiConnessione;
+        private System.Windows.Forms.ListView lvElencoChat;
+        private System.Windows.Forms.ColumnHeader chChat;
     }
 }
 

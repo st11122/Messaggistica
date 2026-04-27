@@ -7,7 +7,7 @@ using MySqlConnector;
 
 namespace Messaggistica
 {
-    class ClsBloccareBL
+    internal class ClsBloccareBL
     {
         #region ATTRIBUTI
         private MySqlConnection _conn = null;
@@ -22,7 +22,7 @@ namespace Messaggistica
 
         #region METODI
 
-        void Bloccare(MySqlConnection conn, ClsBloccare clsBloccare, out string errore)
+        internal static void Bloccare(MySqlConnection conn, ClsBloccare clsBloccare, out string errore)
         {
             errore = String.Empty;
 

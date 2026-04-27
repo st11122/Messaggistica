@@ -11,6 +11,8 @@ namespace Messaggistica
     {
 
         public static ClsUtente io = new ClsUtente();
+        public static ClsUtente utente = null;
+        public static List<long> contattiID = new List<long>();
         public static string connectionString = Properties.Settings.Default.dbConnString;
         public static List<ClsUtente> Contatti = new List<ClsUtente>();
         /// <summary>

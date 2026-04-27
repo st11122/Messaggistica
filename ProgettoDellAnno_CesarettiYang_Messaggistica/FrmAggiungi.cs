@@ -22,7 +22,7 @@ namespace Messaggistica
         {
             MySqlConnection conn = new MySqlConnection(Program.connectionString);
 
-            ClsUtenteBL.Aggiungere(ref conn, tbNickname.Text, Program.io.ID, (long)nudIDcontatto.Value, out string errore);
+            ClsAggiungereBL.Aggiungere(ref conn, tbNickname.Text, Program.io.ID, (long)nudIDcontatto.Value, out string errore);
             if (string.IsNullOrWhiteSpace(errore))
                 MessageBox.Show("Contatto aggiunto con successo");
             else
