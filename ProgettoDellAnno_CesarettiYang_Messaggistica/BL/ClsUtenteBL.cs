@@ -208,35 +208,32 @@ namespace Messaggistica
         {
             List<long> contattiID = new List<long>();
             errore = String.Empty;
-
             try
             {
-                //apro la connessione
-                conn.Open();
-
-                //query
+                // Query
                 string query = "SELECT contattoID FROM aggiungere WHERE utenteID = @id";
 
-                //creo il comando
+                // Creo il comando
                 MySqlCommand cmd = new MySqlCommand(query, conn);
 
-                //prendo il mio id
+                // Aggiungo il parametro PRIMA di eseguire
                 cmd.Parameters.AddWithValue("@id", id);
 
-                //Creo il data reader e la lista degli ID dei contatti
-                MySqlDataReader dr = cmd.ExecuteReader();
+                // Uso DataAdapter + DataTable
+                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
 
-                //ciclo finche non trovo tutti i miei contatti
-                while (dr.Read())
+                // Apro la connessione e riempio il DataTable
+                conn.Open();
+                da.Fill(dt);
+
+                // Leggo le righe del DataTable
+                foreach (DataRow row in dt.Rows)
                 {
-                    contattiID.Add(dr.GetInt32("contattoID"));
+                    contattiID.Add(Convert.ToInt64(row["contattoID"]));
                 }
 
-                dr.Close();
-                cmd.Dispose();
                 conn.Close();
-
-                Program.contattiID = contattiID;
             }
             catch (Exception ex)
             {
