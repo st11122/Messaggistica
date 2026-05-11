@@ -75,7 +75,7 @@ namespace Messaggistica
                 conn.Open();
 
                 //creo la query
-                string sql = "INSERT INTO utenti (nickname, password, biografia, datadinascita, admin) VALUES (@nickname, @password, @biografia, @datadinascita, @admin)";
+                string sql = "INSERT INTO utenti (nickname, password, biografia, datadinascita, admin) VALUES (@nickname, SHA2(@password, 256), @biografia, @datadinascita, @admin)";
 
                 //creo l'oggetto command
 
@@ -116,7 +116,7 @@ namespace Messaggistica
                 conn.Open();
 
                 //query
-                string query = "SELECT * FROM utenti WHERE nickname = @nickname AND password = @password";
+                string query = "SELECT * FROM utenti WHERE nickname = @nickname AND password = SHA2(@password, 256)";
 
                 MySqlCommand cmd = new MySqlCommand(query, conn);
 
