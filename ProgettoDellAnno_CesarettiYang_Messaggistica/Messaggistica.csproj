@@ -85,6 +85,8 @@
   <ItemGroup>
     <Compile Include="BL\ClsAggiungereBL.cs" />
     <Compile Include="BL\ClsBloccareBL.cs" />
+    <Compile Include="BL\ClsGruppoBL.cs" />
+    <Compile Include="BL\ClsMessaggioBL.cs" />
     <Compile Include="BL\ClsUtenteBL.cs" />
     <Compile Include="FrmAggiungi.cs">
       <SubType>Form</SubType>
