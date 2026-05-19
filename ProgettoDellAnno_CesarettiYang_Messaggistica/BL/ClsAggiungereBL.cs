@@ -20,6 +20,7 @@ namespace Messaggistica
         }
         #endregion
 
+        #region METODI
         #region AGGIUNGERE
 
         internal static void Aggiungere(ref MySqlConnection conn, string nickname, long utenteID, long contattoID, out string errore)
@@ -62,6 +63,43 @@ namespace Messaggistica
         }
         #endregion
 
+        #region MODIFICA CONTATTO
+        internal static void ModificaContatto(ref MySqlConnection conn, long contattoID, long utenteID, string nuovoNome, out string errore)
+        {
+            errore = String.Empty;
+
+            try
+            {
+                //apro la connessione
+                conn.Open();
+
+                //creo la query
+                string query = "UPDATE aggiungere SET nickname = @nickname WHERE utenteID=@utenteID AND contattoID=@contattoID";
+
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+
+
+                cmd.Parameters.AddWithValue("@nickname", nuovoNome);
+                cmd.Parameters.AddWithValue("@utenteID", utenteID);
+                cmd.Parameters.AddWithValue("@contattoID", contattoID);
+
+                //eseguo la query
+                int _righeModificate = cmd.ExecuteNonQuery();
+
+                //controllo se le modifiche sono state apportate
+                if (_righeModificate < 1)
+                    errore = "Modifica non apportata";
+
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                errore = ex.Message;
+            }
+        }
+        #endregion
+
+        #endregion
 
     }
 }

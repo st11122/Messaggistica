@@ -34,6 +34,8 @@
             this.btnElimina = new System.Windows.Forms.Button();
             this.btnAggiungiContatto = new System.Windows.Forms.Button();
             this.lblNickname = new System.Windows.Forms.Label();
+            this.lvElencoChat = new System.Windows.Forms.ListView();
+            this.chChat = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lvChat = new System.Windows.Forms.ListView();
             this.chMessaggioInterlocutore = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chMessaggio1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -43,8 +45,6 @@
             this.btnInvia = new System.Windows.Forms.Button();
             this.btnAggiungi = new System.Windows.Forms.Button();
             this.btnTestDiConnessione = new System.Windows.Forms.Button();
-            this.chChat = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.lvElencoChat = new System.Windows.Forms.ListView();
             this.pnlElencoChat.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ptImpostazioni)).BeginInit();
             this.SuspendLayout();
@@ -117,6 +117,26 @@
             this.lblNickname.Size = new System.Drawing.Size(117, 24);
             this.lblNickname.TabIndex = 4;
             this.lblNickname.Text = "<Nickname>";
+            // 
+            // lvElencoChat
+            // 
+            this.lvElencoChat.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.chChat});
+            this.lvElencoChat.FullRowSelect = true;
+            this.lvElencoChat.HideSelection = false;
+            this.lvElencoChat.Location = new System.Drawing.Point(3, 66);
+            this.lvElencoChat.MultiSelect = false;
+            this.lvElencoChat.Name = "lvElencoChat";
+            this.lvElencoChat.Size = new System.Drawing.Size(194, 314);
+            this.lvElencoChat.TabIndex = 1;
+            this.lvElencoChat.UseCompatibleStateImageBehavior = false;
+            this.lvElencoChat.View = System.Windows.Forms.View.Details;
+            this.lvElencoChat.SelectedIndexChanged += new System.EventHandler(this.lvElencoChat_SelectedIndexChanged);
+            // 
+            // chChat
+            // 
+            this.chChat.Text = "Chat";
+            this.chChat.Width = 188;
             // 
             // lvChat
             // 
@@ -201,24 +221,6 @@
             this.btnTestDiConnessione.Text = "Test di connessione";
             this.btnTestDiConnessione.UseVisualStyleBackColor = false;
             this.btnTestDiConnessione.Click += new System.EventHandler(this.btnTestDiConnessione_Click);
-            // 
-            // chChat
-            // 
-            this.chChat.Text = "Chat";
-            this.chChat.Width = 188;
-            // 
-            // lvElencoChat
-            // 
-            this.lvElencoChat.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.chChat});
-            this.lvElencoChat.FullRowSelect = true;
-            this.lvElencoChat.HideSelection = false;
-            this.lvElencoChat.Location = new System.Drawing.Point(3, 66);
-            this.lvElencoChat.Name = "lvElencoChat";
-            this.lvElencoChat.Size = new System.Drawing.Size(194, 314);
-            this.lvElencoChat.TabIndex = 1;
-            this.lvElencoChat.UseCompatibleStateImageBehavior = false;
-            this.lvElencoChat.View = System.Windows.Forms.View.Details;
             // 
             // FrmMain
             // 

@@ -34,9 +34,9 @@ namespace Messaggistica
                 //Apertura connessione
                 _conn.Open();
 
-                string query = "select * from utenti"; //query veloce!
+                string query = "SELECT * FROM utenti";
 
-                //Creo l'oggetto dataadapter (a titolo di esempio, potevo usare altri oggetti [connessi e sconnessi])
+                //Creo l'oggetto dataadapter
                 MySqlDataAdapter da = new MySqlDataAdapter(query, _conn);
 
                 //Allineo il DA con i risultati della query
@@ -47,8 +47,13 @@ namespace Messaggistica
 
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    //ClsUtente ag = new ClsUtente((int)(dt.Rows[i]["ID"]), dt.Rows[i]["Descrizione"].ToString(), dt.Rows[i]["Nickname"].ToString(), (DateTime)(dt.Rows[i]["DataDiNascita"]), Convert.ToByte(dt.Rows[i]["Admin"]));
-                    //listUtenti.Add(ag);
+                    /*ClsUtente ag = new ClsUtente(
+                    (long)(dt.Rows[i]["ID"]), 
+                    dt.Rows[i]["Descrizione"].ToString(), 
+                    dt.Rows[i]["Nickname"].ToString(), 
+                    (DateTime)(dt.Rows[i]["DataDiNascita"]), 
+                    Convert.ToBoolean(dt.Rows[i]["Admin"]));
+                    listUtenti.Add(ag);*/
                 }
 
                 //Chiusura connessione (posso gestirla nella finally o anticiparla visto che lavoro con il DataTable)
@@ -107,36 +112,46 @@ namespace Messaggistica
         #region ACCEDI
         internal static ClsUtente Login(ref MySqlConnection conn, string nickname, string password, ref string errore)
         {
-            //creo l'utente per i dati
             ClsUtente io = null;
-
             try
             {
-                //apro la connessione
-                conn.Open();
+                conn.Open();    //apro la connessione
 
-                //query
+                // Usa DataTable per gestire i risultati
+                DataTable dt = new DataTable();
+
                 string query = "SELECT * FROM utenti WHERE nickname = @nickname AND password = SHA2(@password, 256)";
 
-                MySqlCommand cmd = new MySqlCommand(query, conn);
-
-                cmd.Parameters.AddWithValue("@nickname", nickname);
-                cmd.Parameters.AddWithValue("@password", password);
-
-                MySqlDataReader dr = cmd.ExecuteReader();
-                if (dr.Read())
+                using (MySqlCommand cmd = new MySqlCommand(query, conn))
                 {
-                    io = new ClsUtente();
-                    io.ID = dr.GetUInt32("ID");
-                    io.Nickname = dr.GetString("nickname");
-                    io.Password = dr.GetString("password");
-                    io.Descrizione = dr.GetString("biografia");
-                    io.DataDiNascita = dr.GetDateTime("datadinascita");
-                    io.Admin = dr.GetBoolean("admin");
+                    cmd.Parameters.AddWithValue("@nickname", nickname);
+                    cmd.Parameters.AddWithValue("@password", password);
+
+                    using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+                    {
+                        // La connessione si apre/chiude automaticamente
+                        adapter.Fill(dt);
+                    }
+                }
+
+                // Verifica se esiste almeno una riga
+                if (dt.Rows.Count > 0)
+                {
+                    DataRow row = dt.Rows[0];
+                    io = new ClsUtente
+                    {
+                        ID = Convert.ToUInt32(row["ID"]),
+                        Nickname = row["nickname"].ToString(),
+                        Password = row["password"].ToString(),
+                        Descrizione = row["biografia"].ToString(),
+                        DataDiNascita = Convert.ToDateTime(row["datadinascita"]),
+                        Admin = Convert.ToBoolean(row["admin"])
+                    };
                 }
                 else
+                {
                     errore = "Nickname o password errati";
-
+                }
                 conn.Close();
             }
             catch (Exception ex)
@@ -204,96 +219,54 @@ namespace Messaggistica
         #endregion
 
         #region PRENDI CONTATTI
-        internal static void getAllIDContact(ref MySqlConnection conn, long id, out string errore)
+        internal static List<ClsUtente> PrendiContatti(ref MySqlConnection conn, out string errore)
         {
-            List<long> contattiID = new List<long>();
+            List<ClsUtente> Contatti = new List<ClsUtente>();
             errore = String.Empty;
+
             try
             {
-                // Query
-                string query = "SELECT contattoID FROM aggiungere WHERE utenteID = @id";
+                conn.Open();
+                string query = "SELECT u.ID, a.nickname, u.datadinascita, u.biografia FROM utenti AS u " +
+                    "INNER JOIN aggiungere AS a ON u.ID = a.contattoID " + 
+                    "WHERE a.utenteID = @id";
 
-                // Creo il comando
                 MySqlCommand cmd = new MySqlCommand(query, conn);
 
-                // Aggiungo il parametro PRIMA di eseguire
-                cmd.Parameters.AddWithValue("@id", id);
+                cmd.Parameters.AddWithValue("@id", Program.io.ID);
 
-                // Uso DataAdapter + DataTable
-                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
-
-                // Apro la connessione e riempio il DataTable
-                conn.Open();
+                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
                 da.Fill(dt);
 
-                // Leggo le righe del DataTable
                 foreach (DataRow row in dt.Rows)
                 {
-                    contattiID.Add(Convert.ToInt64(row["contattoID"]));
+                    ClsUtente contatto = new ClsUtente();
+                    contatto.ID = Convert.ToInt64(row["ID"]);
+                    contatto.Nickname = row["nickname"].ToString();
+                    contatto.DataDiNascita = Convert.ToDateTime(row["datadinascita"]);
+                    contatto.Descrizione = row["biografia"].ToString();
+                    contatto.Password = "";
+                    contatto.Admin = false;
+
+                    Contatti.Add(contatto);
                 }
 
                 conn.Close();
-            }
-            catch (Exception ex)
-            {
-                errore = ex.Message;
-            }
-        }
-        #endregion
 
-        #region GET ALL CONTACT
-        internal static List<ClsUtente> getAllContact(ref MySqlConnection conn, long id, out string errore)
-        {
-            List<ClsUtente> contatti = new List<ClsUtente>();
-            errore = String.Empty;
-            try
-            {
-                conn.Open();
-
-                if (Program.contattiID.Count > 0)
-                {
-                    foreach (long contattoId in Program.contattiID)
-                    {
-                        string query = "SELECT * FROM utenti WHERE ID = @id";
-                        MySqlCommand cmd = new MySqlCommand(query, conn);
-
-                        cmd.Parameters.AddWithValue("@id", contattoId);
-                        MySqlDataReader dr = cmd.ExecuteReader();
-
-                        if (dr.Read())
-                        {
-                            ClsUtente utente = new ClsUtente();
-                            utente.ID = dr.GetInt32("ID");
-                            utente.Nickname = dr.GetString("nickname");
-                            utente.Password = dr.GetString("password");
-                            utente.Descrizione = dr.GetString("biografia");
-                            utente.DataDiNascita = dr.GetDateTime("datadinascita");
-                            utente.Admin = dr.GetBoolean("admin");
-
-                            contatti.Add(utente);
-                        }
-
-                        dr.Close();
-                        cmd.Dispose();
-
-                    }
-
-                }
-                conn.Close();
             }
             catch (Exception ex)
             {
                 errore = ex.Message;
             }
 
-            return contatti;
+            return Contatti;
         }
-
         #endregion
+
 
         #region MODIFICA
-        internal static void Modifica(MySqlConnection conn, ClsUtente io, out string errore)
+        internal static void Modifica(ref MySqlConnection conn, ClsUtente io, out string errore)
         {
             errore = String.Empty;
 
@@ -303,18 +276,16 @@ namespace Messaggistica
                 conn.Open();
 
                 //creo la query
-                string query = "UPDATE utenti SET nickname = @nickname, password = @password, biografia = @biografia, datadinascita = @datadinascita WHERE id=@id";
+                string query = "UPDATE utenti SET nickname = @nickname, password = SHA2(@password, 256), biografia = @biografia, datadinascita = @datadinascita WHERE id=@id";
 
                 MySqlCommand cmd = new MySqlCommand(query, conn);
 
                 //modifico i parametri
-                MySqlParameter[] parametri = {
-                    cmd.Parameters.AddWithValue("@id", io.ID),
-                    cmd.Parameters.AddWithValue("@nickname", io.Nickname),
-                    cmd.Parameters.AddWithValue("@password", io.Password),
-                    cmd.Parameters.AddWithValue("@biografia", io.Descrizione),
-                    cmd.Parameters.AddWithValue("@datadinascita", io.DataDiNascita)
-                };
+                cmd.Parameters.AddWithValue("@id", io.ID);
+                cmd.Parameters.AddWithValue("@nickname", io.Nickname);
+                cmd.Parameters.AddWithValue("@password", io.Password);
+                cmd.Parameters.AddWithValue("@biografia", io.Descrizione);
+                cmd.Parameters.AddWithValue("@datadinascita", io.DataDiNascita);
 
                 //eseguo la query
                 int _righeModificate = cmd.ExecuteNonQuery();
@@ -324,6 +295,8 @@ namespace Messaggistica
                     errore = "Modifica non apportata";
                 else
                     Program.io = io;    //modifico il mio utente
+
+                conn.Close();
             }
             catch (Exception ex)
             {
@@ -332,6 +305,8 @@ namespace Messaggistica
         }
 
         #endregion
+
+        
 
         #endregion
     }

@@ -35,8 +35,7 @@ namespace Messaggistica
 
             //prendo i contatti e li metto nel program
             string errore = "";
-            ClsUtenteBL.getAllIDContact(ref conn, Program.io.ID, out errore);
-            Program.Contatti = ClsUtenteBL.getAllContact(ref conn, Program.io.ID, out errore);
+            Program.Contatti = ClsUtenteBL.PrendiContatti(ref conn, out errore);
             PopolaListView(Program.Contatti);   //popolo la listView
         }
 
@@ -49,8 +48,7 @@ namespace Messaggistica
 
             //prendo i contatti e li metto nel program
             string errore = "";
-            ClsUtenteBL.getAllIDContact(ref conn, Program.io.ID, out errore);
-            Program.Contatti = ClsUtenteBL.getAllContact(ref conn, Program.io.ID, out errore);
+            Program.Contatti = ClsUtenteBL.PrendiContatti(ref conn, out errore);
             if (string.IsNullOrWhiteSpace(errore))
                 PopolaListView(Program.Contatti);
             else
@@ -74,6 +72,7 @@ namespace Messaggistica
 
         private void ptImpostazioni_Click(object sender, EventArgs e)
         {
+            Program.io2 = true;
             FrmImpostazioneUtente frmImpostazioneUtente = new FrmImpostazioneUtente();
             frmImpostazioneUtente.ShowDialog();
         }
@@ -113,9 +112,28 @@ namespace Messaggistica
 
         private void lblNomeGruppoOChat_Click(object sender, EventArgs e)
         {
-            //Program.utente = lvElencoChat.SelectedItems[]
-            FrmImpostazioneUtente frmImpostazioneUtente = new FrmImpostazioneUtente();
-            frmImpostazioneUtente.ShowDialog();
+            if (Program.Contatti.Count > 0)
+            {
+                Program.io2 = false;
+                FrmImpostazioneUtente frmImpostazioneUtente = new FrmImpostazioneUtente();
+                frmImpostazioneUtente.ShowDialog();
+            }
+        }
+
+        private void lvElencoChat_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lvElencoChat.SelectedItems.Count > 0)
+            {
+                Program.utente = Program.Contatti.FirstOrDefault(u => u.ID == Convert.ToInt64(lvElencoChat.SelectedItems[0].Tag));  //cerco il contatto con quel tag
+                lblNomeGruppoOChat.Text = Program.utente.Nickname;
+            }
+            else
+            {
+                // Nessuna chat selezionata
+                lblNomeGruppoOChat.Text = "Nessuna chat selezionata";
+                Program.utente = null;
+                Program.io2 = true;
+            }
         }
     }
 }

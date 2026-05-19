@@ -21,7 +21,7 @@ namespace Messaggistica
         private void FrmImpostazioneUtente_Load(object sender, EventArgs e)
         {
             //inserisco i dati nelle form
-            if(Program.utente == null) //controllo se sono io l'utente o il contatto
+            if(Program.io2 == true) //controllo se sono io l'utente o il contatto
             {
                 tbNickname.Text = Program.io.Nickname;
                 tbPassword.Text = Program.io.Password;
@@ -33,11 +33,13 @@ namespace Messaggistica
                 rtbBiografia.ReadOnly = false;
                 btnAnnulla.Text = "Annulla";
                 lblImpostazioni.Text = "IMPOSTAZIONI UTENTE ID: " + Program.io.ID;
+                btnBlocca.Visible = false;
             }
             else
             {
-                tbNickname.ReadOnly = true;
                 tbPassword.Visible = false;
+                lblPassword.Visible = false;
+                cbMostraPassword.Visible = false;
                 dtpDataDiNascita.Enabled = false;
                 rtbBiografia.ReadOnly = true;
                 btnAnnulla.Text = "Chiudi";
@@ -45,7 +47,6 @@ namespace Messaggistica
                 dtpDataDiNascita.Value = Program.utente.DataDiNascita;
                 rtbBiografia.Text = Program.utente.Descrizione;
                 lblImpostazioni.Text = "INFORMAZIONI UTENTE ID: " + Program.utente.ID;
-                btnSalva.Text = "Blocca";
             }
 
         }
@@ -61,25 +62,53 @@ namespace Messaggistica
 
         private void btnSalva_Click(object sender, EventArgs e)
         {
-            if(Program.utente == null)
-            {
+            Program.io.Nickname = tbNickname.Text;
+            Program.io.Descrizione = rtbBiografia.Text;
+            Program.io.DataDiNascita = dtpDataDiNascita.Value;
+            Program.io.Password = tbPassword.Text;
 
+            MySqlConnection conn = new MySqlConnection(Program.connectionString);
+            string errore;
+            //controllo se sto modificando me stesso o no
+            if (Program.io2)
+            {
+                ClsUtenteBL.Modifica(ref conn, Program.io, out errore);
+                if (string.IsNullOrWhiteSpace(errore))
+                    MessageBox.Show("Modifica apportata");
+                else
+                    MessageBox.Show($"Modifica non apportata\n {errore}", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
-                //blocco l'uente
-                MySqlConnection conn = new MySqlConnection(Program.connectionString);
-                
-
-                ClsBloccare bloccare = new ClsBloccare();
-                bloccare.Bloccato = Program.utente.ID;
-                bloccare.BloccatoDa = Program.io.ID;
-                ClsBloccareBL.Bloccare(conn, bloccare, out string errore);
+                ClsAggiungereBL.ModificaContatto(ref conn, Program.utente.ID, Program.io.ID, tbNickname.Text, out errore);
                 if (string.IsNullOrWhiteSpace(errore))
-                    MessageBox.Show("Utente bloccato");
+                    MessageBox.Show("Utente modificato");
                 else
-                    MessageBox.Show($"Utente non bloccato\n {errore}", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Utente non modificato\n {errore}", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            this.Close();
+        }
+
+        private void btnBlocca_Click(object sender, EventArgs e)
+        {
+            //blocco l'uente
+            MySqlConnection conn = new MySqlConnection(Program.connectionString);
+
+
+            ClsBloccare bloccare = new ClsBloccare();
+            bloccare.Bloccato = Program.utente.ID;
+            bloccare.BloccatoDa = Program.io.ID;
+            ClsBloccareBL.Bloccare(conn, bloccare, out string errore);
+            if (string.IsNullOrWhiteSpace(errore))
+                MessageBox.Show("Utente bloccato");
+            else
+                MessageBox.Show($"Utente non bloccato\n {errore}", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+        }
+
+        private void btnAnnulla_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

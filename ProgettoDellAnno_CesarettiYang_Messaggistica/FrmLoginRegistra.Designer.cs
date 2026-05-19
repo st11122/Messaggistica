@@ -50,7 +50,7 @@
             this.tbNickname.Location = new System.Drawing.Point(360, 100);
             this.tbNickname.Name = "tbNickname";
             this.tbNickname.Size = new System.Drawing.Size(394, 40);
-            this.tbNickname.TabIndex = 2;
+            this.tbNickname.TabIndex = 1;
             // 
             // lblNickname
             // 
@@ -99,7 +99,7 @@
             this.dtpDataDiNascita.Location = new System.Drawing.Point(360, 257);
             this.dtpDataDiNascita.Name = "dtpDataDiNascita";
             this.dtpDataDiNascita.Size = new System.Drawing.Size(394, 38);
-            this.dtpDataDiNascita.TabIndex = 9;
+            this.dtpDataDiNascita.TabIndex = 3;
             this.dtpDataDiNascita.Visible = false;
             // 
             // lblPassword
@@ -118,7 +118,7 @@
             this.tbPassword.Location = new System.Drawing.Point(360, 164);
             this.tbPassword.Name = "tbPassword";
             this.tbPassword.Size = new System.Drawing.Size(394, 40);
-            this.tbPassword.TabIndex = 10;
+            this.tbPassword.TabIndex = 2;
             this.tbPassword.UseSystemPasswordChar = true;
             // 
             // cbMostraPassword
@@ -140,7 +140,7 @@
             this.btnAccediRegistra.Location = new System.Drawing.Point(285, 420);
             this.btnAccediRegistra.Name = "btnAccediRegistra";
             this.btnAccediRegistra.Size = new System.Drawing.Size(202, 67);
-            this.btnAccediRegistra.TabIndex = 15;
+            this.btnAccediRegistra.TabIndex = 5;
             this.btnAccediRegistra.Text = "Accedi";
             this.btnAccediRegistra.UseVisualStyleBackColor = false;
             this.btnAccediRegistra.Click += new System.EventHandler(this.btnAccediRegistra_Click);
@@ -150,7 +150,7 @@
             this.rtbBiografia.Location = new System.Drawing.Point(360, 318);
             this.rtbBiografia.Name = "rtbBiografia";
             this.rtbBiografia.Size = new System.Drawing.Size(394, 79);
-            this.rtbBiografia.TabIndex = 16;
+            this.rtbBiografia.TabIndex = 4;
             this.rtbBiografia.Text = "";
             this.rtbBiografia.Visible = false;
             // 

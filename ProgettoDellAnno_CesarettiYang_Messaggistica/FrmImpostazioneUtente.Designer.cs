@@ -40,6 +40,7 @@
             this.btnAnnulla = new System.Windows.Forms.Button();
             this.lblBiografia = new System.Windows.Forms.Label();
             this.rtbBiografia = new System.Windows.Forms.RichTextBox();
+            this.btnBlocca = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // cbMostraPassword
@@ -141,6 +142,7 @@
             this.btnAnnulla.TabIndex = 22;
             this.btnAnnulla.Text = "Annulla";
             this.btnAnnulla.UseVisualStyleBackColor = true;
+            this.btnAnnulla.Click += new System.EventHandler(this.btnAnnulla_Click);
             // 
             // lblBiografia
             // 
@@ -160,12 +162,24 @@
             this.rtbBiografia.TabIndex = 24;
             this.rtbBiografia.Text = "";
             // 
+            // btnBlocca
+            // 
+            this.btnBlocca.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnBlocca.Location = new System.Drawing.Point(669, 380);
+            this.btnBlocca.Name = "btnBlocca";
+            this.btnBlocca.Size = new System.Drawing.Size(119, 56);
+            this.btnBlocca.TabIndex = 25;
+            this.btnBlocca.Text = "Blocca";
+            this.btnBlocca.UseVisualStyleBackColor = true;
+            this.btnBlocca.Click += new System.EventHandler(this.btnBlocca_Click);
+            // 
             // FrmImpostazioneUtente
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnBlocca);
             this.Controls.Add(this.rtbBiografia);
             this.Controls.Add(this.lblBiografia);
             this.Controls.Add(this.btnAnnulla);
@@ -200,5 +214,6 @@
         private System.Windows.Forms.Button btnAnnulla;
         private System.Windows.Forms.Label lblBiografia;
         private System.Windows.Forms.RichTextBox rtbBiografia;
+        private System.Windows.Forms.Button btnBlocca;
     }
 }
