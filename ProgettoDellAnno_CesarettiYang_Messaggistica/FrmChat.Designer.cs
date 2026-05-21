@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.pnlElencoChat = new System.Windows.Forms.Panel();
             this.btnElimina = new System.Windows.Forms.Button();
             this.btnAggiungiContatto = new System.Windows.Forms.Button();
@@ -35,7 +36,6 @@
             this.lvElencoChat = new System.Windows.Forms.ListView();
             this.chChat = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lvChat = new System.Windows.Forms.ListView();
-            this.chMessaggioInterlocutore = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chMessaggio1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chMessaggio2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label1 = new System.Windows.Forms.Label();
@@ -43,7 +43,11 @@
             this.btnInvia = new System.Windows.Forms.Button();
             this.btnCarica = new System.Windows.Forms.Button();
             this.btnAggiungi = new System.Windows.Forms.Button();
+<<<<<<< Updated upstream
             this.ptImpostazioni = new System.Windows.Forms.PictureBox();
+=======
+            this.tmMessaggi = new System.Windows.Forms.Timer(this.components);
+>>>>>>> Stashed changes
             this.pnlElencoChat.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ptImpostazioni)).BeginInit();
             this.SuspendLayout();
@@ -63,8 +67,34 @@
             this.pnlElencoChat.Size = new System.Drawing.Size(200, 450);
             this.pnlElencoChat.TabIndex = 0;
             // 
+<<<<<<< Updated upstream
+=======
+            // btnCreaGruppo
+            // 
+            this.btnCreaGruppo.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.btnCreaGruppo.BackColor = System.Drawing.Color.Transparent;
+            this.btnCreaGruppo.Location = new System.Drawing.Point(69, 386);
+            this.btnCreaGruppo.Name = "btnCreaGruppo";
+            this.btnCreaGruppo.Size = new System.Drawing.Size(60, 60);
+            this.btnCreaGruppo.TabIndex = 8;
+            this.btnCreaGruppo.Text = "Crea gruppo";
+            this.btnCreaGruppo.UseVisualStyleBackColor = false;
+            this.btnCreaGruppo.Click += new System.EventHandler(this.btnCreaGruppo_Click);
+            // 
+            // ptImpostazioni
+            // 
+            this.ptImpostazioni.Image = global::Messaggistica.Properties.Resources.Ingranaggio_removebg_preview__1_;
+            this.ptImpostazioni.Location = new System.Drawing.Point(12, 12);
+            this.ptImpostazioni.Name = "ptImpostazioni";
+            this.ptImpostazioni.Size = new System.Drawing.Size(38, 35);
+            this.ptImpostazioni.TabIndex = 0;
+            this.ptImpostazioni.TabStop = false;
+            this.ptImpostazioni.Click += new System.EventHandler(this.ptImpostazioni_Click);
+            // 
+>>>>>>> Stashed changes
             // btnElimina
             // 
+            this.btnElimina.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.btnElimina.BackColor = System.Drawing.Color.Transparent;
             this.btnElimina.Location = new System.Drawing.Point(3, 386);
             this.btnElimina.Name = "btnElimina";
@@ -75,6 +105,7 @@
             // 
             // btnAggiungiContatto
             // 
+            this.btnAggiungiContatto.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.btnAggiungiContatto.BackColor = System.Drawing.Color.Transparent;
             this.btnAggiungiContatto.Location = new System.Drawing.Point(137, 386);
             this.btnAggiungiContatto.Name = "btnAggiungiContatto";
@@ -96,6 +127,8 @@
             // 
             // lvElencoChat
             // 
+            this.lvElencoChat.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.lvElencoChat.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.chChat});
             this.lvElencoChat.HideSelection = false;
@@ -113,8 +146,10 @@
             // 
             // lvChat
             // 
+            this.lvChat.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lvChat.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.chMessaggioInterlocutore,
             this.chMessaggio1,
             this.chMessaggio2});
             this.lvChat.HideSelection = false;
@@ -125,20 +160,19 @@
             this.lvChat.UseCompatibleStateImageBehavior = false;
             this.lvChat.View = System.Windows.Forms.View.Details;
             // 
-            // chMessaggioInterlocutore
-            // 
-            this.chMessaggioInterlocutore.Text = "Interlocutore/i";
-            this.chMessaggioInterlocutore.Width = 117;
-            // 
             // chMessaggio1
             // 
             this.chMessaggio1.Text = "Messaggio";
-            this.chMessaggio1.Width = 199;
+            this.chMessaggio1.Width = 274;
             // 
             // chMessaggio2
             // 
             this.chMessaggio2.Text = "Messaggio";
+<<<<<<< Updated upstream
             this.chMessaggio2.Width = 255;
+=======
+            this.chMessaggio2.Width = 271;
+>>>>>>> Stashed changes
             // 
             // label1
             // 
@@ -153,6 +187,7 @@
             // 
             // richTextBox1
             // 
+<<<<<<< Updated upstream
             this.richTextBox1.ForeColor = System.Drawing.SystemColors.WindowFrame;
             this.richTextBox1.Location = new System.Drawing.Point(210, 386);
             this.richTextBox1.Name = "richTextBox1";
@@ -163,6 +198,23 @@
             // btnInvia
             // 
             this.btnInvia.Location = new System.Drawing.Point(690, 386);
+=======
+            this.rtbMessaggio.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.rtbMessaggio.ForeColor = System.Drawing.Color.Black;
+            this.rtbMessaggio.Location = new System.Drawing.Point(210, 386);
+            this.rtbMessaggio.Name = "rtbMessaggio";
+            this.rtbMessaggio.Size = new System.Drawing.Size(465, 52);
+            this.rtbMessaggio.TabIndex = 4;
+            this.rtbMessaggio.Text = "";
+            this.rtbMessaggio.KeyDown += new System.Windows.Forms.KeyEventHandler(this.rtbMessaggio_KeyDown);
+            // 
+            // btnInvia
+            // 
+            this.btnInvia.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnInvia.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnInvia.Location = new System.Drawing.Point(681, 386);
+>>>>>>> Stashed changes
             this.btnInvia.Name = "btnInvia";
             this.btnInvia.Size = new System.Drawing.Size(75, 23);
             this.btnInvia.TabIndex = 5;
@@ -187,7 +239,18 @@
             this.btnAggiungi.TabIndex = 8;
             this.btnAggiungi.Text = "Aggiungi";
             this.btnAggiungi.UseVisualStyleBackColor = false;
+<<<<<<< Updated upstream
            
+=======
+            this.btnAggiungi.Visible = false;
+            this.btnAggiungi.Click += new System.EventHandler(this.btnAggiungi_Click);
+            // 
+            // tmMessaggi
+            // 
+            this.tmMessaggi.Enabled = true;
+            this.tmMessaggi.Interval = 5000;
+            this.tmMessaggi.Tick += new System.EventHandler(this.tmMessaggi_Tick);
+>>>>>>> Stashed changes
             // 
             // FrmMain
             // 
@@ -218,8 +281,12 @@
         private System.Windows.Forms.ListView lvElencoChat;
         private System.Windows.Forms.ColumnHeader chChat;
         private System.Windows.Forms.ListView lvChat;
+<<<<<<< Updated upstream
         private System.Windows.Forms.ColumnHeader chMessaggioInterlocutore;
         private System.Windows.Forms.Label label2;
+=======
+        private System.Windows.Forms.Label lblNickname;
+>>>>>>> Stashed changes
         private System.Windows.Forms.ColumnHeader chMessaggio1;
         private System.Windows.Forms.ColumnHeader chMessaggio2;
         private System.Windows.Forms.Label label1;
@@ -230,6 +297,13 @@
         private System.Windows.Forms.Button btnAggiungiContatto;
         private System.Windows.Forms.Button btnAggiungi;
         private System.Windows.Forms.PictureBox ptImpostazioni;
+<<<<<<< Updated upstream
+=======
+        private System.Windows.Forms.Button btnCreaGruppo;
+        private System.Windows.Forms.ListView lvElencoChat;
+        private System.Windows.Forms.ColumnHeader chChat;
+        private System.Windows.Forms.Timer tmMessaggi;
+>>>>>>> Stashed changes
     }
 }
 
