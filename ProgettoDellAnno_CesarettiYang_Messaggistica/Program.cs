@@ -9,12 +9,24 @@ namespace Messaggistica
 {
     static class Program
     {
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+=======
+>>>>>>> Chat
 
         public static ClsUtente io = new ClsUtente();
         public static ClsUtente utente = null;
         public static string connectionString = Properties.Settings.Default.dbConnString;
         public static List<ClsUtente> Contatti = new List<ClsUtente>();
         public static bool io2;
+<<<<<<< HEAD
+=======
+        public static List<List<ClsMessaggio>> Messaggi = new List<List<ClsMessaggio>>();
+        public static int chat = -1;
+
+>>>>>>> Stashed changes
+>>>>>>> Chat
         /// <summary>
         /// Punto di ingresso principale dell'applicazione.
         /// </summary>

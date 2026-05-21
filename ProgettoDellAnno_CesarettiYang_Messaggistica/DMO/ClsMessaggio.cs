@@ -8,6 +8,7 @@ namespace Messaggistica
 {
     public class ClsMessaggio
     {
+<<<<<<< Updated upstream
         private string testo;
         private DateTime data;
         private bool eliminatoDaMittente;
@@ -24,10 +25,42 @@ namespace Messaggistica
         public long DestintarioID { get => destintarioID; set => destintarioID = value; }
         public long MittenteID { get => mittenteID; set => mittenteID = value; }
 
+<<<<<<< HEAD
         // --- COSTRUTTORE ---
+=======
+        // --- COSTRUTTORI ---
+=======
+        private string _testo;
+        private DateTime _data;
+        private bool _eliminatoDaMittente;
+        private bool _eliminatoDaDestinatario;
+        private long _mittenteID;
+        private long _destinatarioID;
+        private long _gruppoID;
+
+
+        public string Testo { get => _testo; set => _testo = value; }
+        public DateTime Data { get => _data; set => _data = value; }
+        public bool EliminatoDaMittente { get => _eliminatoDaMittente; set => _eliminatoDaMittente = value; }
+        public bool EliminatoDaDestinatario { get => _eliminatoDaDestinatario; set => _eliminatoDaDestinatario = value; }
+        public long DestinatarioID { get => _destinatarioID; set => _destinatarioID = value; }
+        public long MittenteID { get => _mittenteID; set => _mittenteID = value; }
+        public long GruppoID { get => _gruppoID; set => _gruppoID = value; }
+
+        //COSTRUTTORE
+>>>>>>> Stashed changes
+>>>>>>> Chat
 
         public ClsMessaggio()
         {
+<<<<<<< HEAD
+=======
+            this.data = DateTime.Now; // Prende l'ora esatta del PC
+            this.eliminatoDaMittente = false;
+            this.eliminatoDaDestinatario = false;
+        }
+<<<<<<< Updated upstream
+>>>>>>> Chat
 
         }
         public ClsMessaggio(string testo, DateTime data, bool eliminatoDaMittente, bool eliminatoDaDestinatario, long mittenteID, long destintarioID)
@@ -36,8 +69,22 @@ namespace Messaggistica
             this.data = data;
             this.eliminatoDaMittente = eliminatoDaMittente;
             this.eliminatoDaDestinatario = eliminatoDaDestinatario;
+<<<<<<< HEAD
             this.mittenteID = mittenteID;
             this.destintarioID = destintarioID;
+=======
+=======
+        public ClsMessaggio(string testo, DateTime data, bool eliminatoDaMittente, bool eliminatoDaDestinatario, long mittenteID, long destinatarioID, long gruppoID)
+        {
+            this._testo = testo;
+            this._data = data;
+            this._eliminatoDaMittente = eliminatoDaMittente;
+            this._eliminatoDaDestinatario = eliminatoDaDestinatario;
+            this._mittenteID = mittenteID;
+            this._destinatarioID = destinatarioID;
+            this._gruppoID = gruppoID;
+>>>>>>> Stashed changes
+>>>>>>> Chat
         }
     }
 }
