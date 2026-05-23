@@ -19,8 +19,7 @@ namespace Messaggistica
         public static bool io2;
         public static List<List<ClsMessaggio>> Messaggi = new List<List<ClsMessaggio>>();
         public static int chat = -1;
-
->>>>>>> Stashed changes
+        
         /// <summary>
         /// Punto di ingresso principale dell'applicazione.
         /// </summary>

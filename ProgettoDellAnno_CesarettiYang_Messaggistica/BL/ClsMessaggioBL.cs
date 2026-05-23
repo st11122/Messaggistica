@@ -20,6 +20,7 @@ namespace Messaggistica
             _conn = cn;
         }
         #endregion
+
         #region METODI
 
         #region CREARE
@@ -37,7 +38,6 @@ namespace Messaggistica
                 string sql = "INSERT INTO messaggi (testo, data, mittenteID, destinatarioID ) VALUES (@testo, @data, @mittenteID, @destinatarioID)";
 
                 //creo l'oggetto command
-
                 MySqlCommand cmd = new MySqlCommand(sql, conn);
 
                 //assegno i valori
@@ -45,7 +45,6 @@ namespace Messaggistica
                 cmd.Parameters.AddWithValue("@data", messaggio.Data);
                 cmd.Parameters.AddWithValue("@mittenteID", messaggio.MittenteID);
                 cmd.Parameters.AddWithValue("@destinatarioID", messaggio.DestinatarioID);
-
                 //eseguo il comando
                 int numRec = cmd.ExecuteNonQuery();
                 if (numRec == 1)

@@ -44,11 +44,8 @@ namespace Messaggistica
             this.rtbMessaggio = new System.Windows.Forms.RichTextBox();
             this.btnInvia = new System.Windows.Forms.Button();
             this.btnAggiungi = new System.Windows.Forms.Button();
-<<<<<<< Updated upstream
+            this.btnTestDiConnessione = new System.Windows.Forms.Button();
             this.ptImpostazioni = new System.Windows.Forms.PictureBox();
-=======
-            this.tmMessaggi = new System.Windows.Forms.Timer(this.components);
->>>>>>> Stashed changes
             this.pnlElencoChat.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ptImpostazioni)).BeginInit();
             this.SuspendLayout();
@@ -92,8 +89,7 @@ namespace Messaggistica
             this.ptImpostazioni.TabIndex = 0;
             this.ptImpostazioni.TabStop = false;
             this.ptImpostazioni.Click += new System.EventHandler(this.ptImpostazioni_Click);
-            // 
->>>>>>> Stashed changes
+            //
             // btnElimina
             // 
             this.btnElimina.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
@@ -174,11 +170,9 @@ namespace Messaggistica
             // chMessaggio2
             // 
             this.chMessaggio2.Text = "Messaggio";
-<<<<<<< Updated upstream
+            this.chMessaggio2.Width = 253;
             this.chMessaggio2.Width = 255;
-=======
             this.chMessaggio2.Width = 271;
->>>>>>> Stashed changes
             // 
             // lblNomeGruppoOChat
             // 
@@ -206,6 +200,19 @@ namespace Messaggistica
             // 
             this.btnInvia.Location = new System.Drawing.Point(690, 386);
 =======
+            this.rtbMessaggio.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.rtbMessaggio.ForeColor = System.Drawing.Color.Black;
+            this.rtbMessaggio.Location = new System.Drawing.Point(210, 386);
+            this.rtbMessaggio.Name = "rtbMessaggio";
+            this.rtbMessaggio.Size = new System.Drawing.Size(465, 52);
+            this.rtbMessaggio.TabIndex = 4;
+            this.rtbMessaggio.Text = "";
+            this.rtbMessaggio.KeyDown += new System.Windows.Forms.KeyEventHandler(this.rtbMessaggio_KeyDown);
+            // 
+            // btnInvia
+            // 
+            this.btnInvia.Location = new System.Drawing.Point(690, 386);
             this.rtbMessaggio.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.rtbMessaggio.ForeColor = System.Drawing.Color.Black;
@@ -246,10 +253,22 @@ namespace Messaggistica
             // 
             // tmMessaggi
             // 
+            this.btnTestDiConnessione.BackColor = System.Drawing.Color.Transparent;
+            this.btnTestDiConnessione.Location = new System.Drawing.Point(471, 12);
+            this.btnTestDiConnessione.Name = "btnTestDiConnessione";
+            this.btnTestDiConnessione.Size = new System.Drawing.Size(60, 48);
+            this.btnTestDiConnessione.TabIndex = 9;
+            this.btnTestDiConnessione.Text = "Test di connessione";
+            this.btnTestDiConnessione.UseVisualStyleBackColor = false;
+            this.btnTestDiConnessione.Click += new System.EventHandler(this.btnTestDiConnessione_Click);
+            this.btnAggiungi.Visible = false;
+            this.btnAggiungi.Click += new System.EventHandler(this.btnAggiungi_Click);
+            // 
+            // tmMessaggi
+            // 
             this.tmMessaggi.Enabled = true;
             this.tmMessaggi.Interval = 5000;
             this.tmMessaggi.Tick += new System.EventHandler(this.tmMessaggi_Tick);
->>>>>>> Stashed changes
             // 
             // FrmMain
             // 
@@ -284,7 +303,7 @@ namespace Messaggistica
         private System.Windows.Forms.Label label2;
 =======
         private System.Windows.Forms.Label lblNickname;
->>>>>>> Stashed changes
+        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ColumnHeader chMessaggio1;
         private System.Windows.Forms.ColumnHeader chMessaggio2;
         private System.Windows.Forms.Label lblNomeGruppoOChat;
@@ -300,7 +319,6 @@ namespace Messaggistica
         private System.Windows.Forms.ListView lvElencoChat;
         private System.Windows.Forms.ColumnHeader chChat;
         private System.Windows.Forms.Timer tmMessaggi;
->>>>>>> Stashed changes
     }
 }
 

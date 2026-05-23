@@ -47,9 +47,6 @@ namespace Messaggistica
                     MessageBox.Show($"Messaggio non inviato\n{errore}", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-
-
         private void btnAggiungiContatto_Click(object sender, EventArgs e)
         {
             FrmAggiungi frmAggiungi = new FrmAggiungi();
@@ -74,26 +71,19 @@ namespace Messaggistica
             string errore = "";
             Program.Contatti = ClsUtenteBL.PrendiContatti(ref conn, out errore);
             if (string.IsNullOrWhiteSpace(errore))
-            {
                 PopolaListViewContatti();
-                ClsMessaggioBL.RecuperoMessaggi(ref conn, out errore);  //prendo i messaggi
-                if (string.IsNullOrWhiteSpace(errore))
-                    PopolaListViewContatti();
-                else
-                    MessageBox.Show($"Errore nel caricamento dei messaggi\n {errore}", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
             else
                 MessageBox.Show($"Errore nel caricamento dei contatti\n {errore}", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             
         }
+        
 
         #region POPOLA LIST VIEW
         private void PopolaListViewContatti()
         {
             //popolo la listView
             lvElencoChat.Items.Clear();
-
             foreach(ClsUtente utente in Program.Contatti)
             {
                 ListViewItem lvi = new ListViewItem(utente.Nickname);
@@ -190,6 +180,9 @@ namespace Messaggistica
                 Program.chat = Program.Messaggi.FindIndex(chat => chat.Count > 0 && (chat[0].MittenteID == Program.io.ID && chat[0].DestinatarioID == Program.utente.ID));
                 
                 lblNomeGruppoOChat.Text = Program.utente.Nickname;
+                Program.chat = Program.Messaggi.FindIndex(chat => chat.Count > 0 && (chat[0].MittenteID == Program.io.ID && chat[0].DestinatarioID == Program.utente.ID));
+                
+                lblNomeGruppoOChat.Text = Program.utente.Nickname;
                 PopolaListViewChat();
             }
             else
@@ -220,6 +213,5 @@ namespace Messaggistica
             if (string.IsNullOrWhiteSpace(errore))
                 PopolaListViewContatti();
         }
->>>>>>> Stashed changes
     }
 }
