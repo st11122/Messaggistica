@@ -1,22 +1,14 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-<<<<<<< HEAD
-using MySqlConnector;
-
-namespace Messaggistica.BL
-{
-    class ClsMessaggioBL
-=======
 using System.Data;
 using MySqlConnector;
 
 namespace Messaggistica
 {
     internal class ClsMessaggioBL
->>>>>>> Chat
     {
         #region ATTRIBUTI
         private MySqlConnection _conn = null;
@@ -28,11 +20,9 @@ namespace Messaggistica
             _conn = cn;
         }
         #endregion
-        #region METODI
-<<<<<<< HEAD
-=======
 
->>>>>>> Chat
+        #region METODI
+
         #region CREARE
         internal static long Create(ref MySqlConnection conn, ClsMessaggio messaggio, out string errore)
         {
@@ -45,26 +35,16 @@ namespace Messaggistica
                 conn.Open();
 
                 //creo la query
-<<<<<<< HEAD
-                string sql = "INSERT INTO messaggi (testo, data, mittenteID, destintarioID ) VALUES (@testo, @data, @mittenteID, @destintarioID)";
-=======
                 string sql = "INSERT INTO messaggi (testo, data, mittenteID, destinatarioID ) VALUES (@testo, @data, @mittenteID, @destinatarioID)";
->>>>>>> Chat
 
                 //creo l'oggetto command
-
                 MySqlCommand cmd = new MySqlCommand(sql, conn);
 
                 //assegno i valori
                 cmd.Parameters.AddWithValue("@testo", messaggio.Testo);
                 cmd.Parameters.AddWithValue("@data", messaggio.Data);
                 cmd.Parameters.AddWithValue("@mittenteID", messaggio.MittenteID);
-<<<<<<< HEAD
-                cmd.Parameters.AddWithValue("@destintarioID", messaggio.DestintarioID);
-=======
                 cmd.Parameters.AddWithValue("@destinatarioID", messaggio.DestinatarioID);
->>>>>>> Chat
-
                 //eseguo il comando
                 int numRec = cmd.ExecuteNonQuery();
                 if (numRec == 1)
@@ -81,8 +61,6 @@ namespace Messaggistica
         }
         #endregion
 
-<<<<<<< HEAD
-=======
         #region RECUPERO MESSAGGI
 
         internal static void RecuperoMessaggi (ref MySqlConnection conn,  out string errore)
@@ -151,7 +129,6 @@ namespace Messaggistica
 
         #endregion
 
->>>>>>> Chat
         #endregion
     }
 }

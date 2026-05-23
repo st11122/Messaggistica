@@ -17,19 +17,6 @@ namespace Messaggistica
         {
             InitializeComponent();
         }
-<<<<<<< HEAD
-
-        private void btnInvia_Click(object sender, EventArgs e)
-        {
-            ClsMessaggio messaggio = new ClsMessaggio();
-            messaggio.Data = DateTime.Now;
-            messaggio.Testo = rtbMessaggio.Text;
-
-        }
-
-=======
-<<<<<<< Updated upstream
-=======
 
         private void btnInvia_Click(object sender, EventArgs e)
         {
@@ -58,10 +45,6 @@ namespace Messaggistica
                     MessageBox.Show($"Messaggio non inviato\n{errore}", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-
-
->>>>>>> Chat
         private void btnAggiungiContatto_Click(object sender, EventArgs e)
         {
             FrmAggiungi frmAggiungi = new FrmAggiungi();
@@ -72,71 +55,38 @@ namespace Messaggistica
             //prendo i contatti e li metto nel program
             string errore = "";
             Program.Contatti = ClsUtenteBL.PrendiContatti(ref conn, out errore);
-<<<<<<< HEAD
-            PopolaListView(Program.Contatti);   //popolo la listView
-=======
             PopolaListViewContatti();   //popolo la listView
->>>>>>> Chat
         }
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
             //stampo il proprio nome utente sulla form main
             lblNickname.Text = Program.io.Nickname;
-<<<<<<< HEAD
-
-=======
             tmMessaggi.Start();
->>>>>>> Chat
             MySqlConnection conn = new MySqlConnection(Program.connectionString);
 
             //prendo i contatti e li metto nel program
             string errore = "";
             Program.Contatti = ClsUtenteBL.PrendiContatti(ref conn, out errore);
             if (string.IsNullOrWhiteSpace(errore))
-<<<<<<< HEAD
-                PopolaListView(Program.Contatti);
-            else
-                MessageBox.Show($"Errore nel caricamento dei contatti\n {errore}", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-
-        #region POPOLA LIST VIEW
-        private void PopolaListView(List<ClsUtente> contatti)
-=======
-            {
                 PopolaListViewContatti();
-                ClsMessaggioBL.RecuperoMessaggi(ref conn, out errore);  //prendo i messaggi
-                if (string.IsNullOrWhiteSpace(errore))
-                    PopolaListViewContatti();
-                else
-                    MessageBox.Show($"Errore nel caricamento dei messaggi\n {errore}", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
             else
                 MessageBox.Show($"Errore nel caricamento dei contatti\n {errore}", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-            
         }
+        
 
         #region POPOLA LIST VIEW
         private void PopolaListViewContatti()
->>>>>>> Chat
         {
             //popolo la listView
             lvElencoChat.Items.Clear();
-
-<<<<<<< HEAD
-            foreach(ClsUtente utente in contatti)
-=======
             foreach(ClsUtente utente in Program.Contatti)
->>>>>>> Chat
             {
                 ListViewItem lvi = new ListViewItem(utente.Nickname);
                 lvi.Tag = utente.ID;
                 lvElencoChat.Items.Add(lvi);
             }
         }
-<<<<<<< HEAD
-=======
 
         private void PopolaListViewChat()
         {
@@ -166,7 +116,6 @@ namespace Messaggistica
                     lvChat.EnsureVisible(lvChat.Items.Count - 1);   //vado all'ultimo messaggio inviato
 
         }
->>>>>>> Chat
         #endregion
 
         private void ptImpostazioni_Click(object sender, EventArgs e)
@@ -224,30 +173,22 @@ namespace Messaggistica
             if (lvElencoChat.SelectedItems.Count > 0)
             {
                 Program.utente = Program.Contatti.FirstOrDefault(u => u.ID == Convert.ToInt64(lvElencoChat.SelectedItems[0].Tag));  //cerco il contatto con quel tag
-<<<<<<< HEAD
                 lblNomeGruppoOChat.Text = Program.utente.Nickname;
-=======
                 Program.chat = Program.Messaggi.FindIndex(chat => chat.Count > 0 && (chat[0].MittenteID == Program.io.ID && chat[0].DestinatarioID == Program.utente.ID));
                 
                 lblNomeGruppoOChat.Text = Program.utente.Nickname;
                 PopolaListViewChat();
->>>>>>> Chat
             }
             else
             {
                 // Nessuna chat selezionata
                 lblNomeGruppoOChat.Text = "Nessuna chat selezionata";
-<<<<<<< HEAD
-=======
                 lvChat.Items.Clear();
                 rtbMessaggio.Text = "";
->>>>>>> Chat
                 Program.utente = null;
                 Program.io2 = true;
             }
         }
-<<<<<<< HEAD
-=======
 
         private void rtbMessaggio_KeyDown(object sender, KeyEventArgs e)
         {
@@ -266,7 +207,5 @@ namespace Messaggistica
             if (string.IsNullOrWhiteSpace(errore))
                 PopolaListViewContatti();
         }
->>>>>>> Stashed changes
->>>>>>> Chat
     }
 }
