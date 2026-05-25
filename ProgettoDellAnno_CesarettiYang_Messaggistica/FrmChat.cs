@@ -17,36 +17,47 @@ namespace Messaggistica
         {
             InitializeComponent();
         }
-<<<<<<< Updated upstream
-=======
 
         private void btnInvia_Click(object sender, EventArgs e)
         {
-            if (Program.utente != null)
+
+            // RICERCA CORRETTA DELLA CHAT PRIMA DI INVIARE
+            int chatIndex = TrovaIndiceChat(Program.utente.ID);
+
+            if (chatIndex == -1)
             {
-                if (Program.chat == -1) //controllo se esiste la chat e in caso ne creo una e vado all'ultima
-                {
-                    Program.Messaggi.Add(new List<ClsMessaggio>());
-                    Program.chat = Program.Messaggi.Count - 1;
-                }
-                ClsMessaggio messaggio = new ClsMessaggio();
-                messaggio.Data = DateTime.Now;
-                messaggio.Testo = rtbMessaggio.Text;
-                messaggio.DestinatarioID = Program.utente.ID;
-                messaggio.MittenteID = Program.io.ID;
-                MySqlConnection conn = new MySqlConnection(Program.connectionString);
-                string errore = "";
-                ClsMessaggioBL.Create(ref conn, messaggio, out errore);
-                if (string.IsNullOrWhiteSpace(errore))
-                {
-                    Program.Messaggi[Program.chat].Add(messaggio);
-                    PopolaListViewChat();
-                    rtbMessaggio.Text = ""; //libero la rtb                
-                }
-                else
-                    MessageBox.Show($"Messaggio non inviato\n{errore}", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // Nuova chat
+                Program.Messaggi.Add(new List<ClsMessaggio>());
+                chatIndex = Program.Messaggi.Count - 1;
+            }
+
+            ClsMessaggio messaggio = new ClsMessaggio();
+            messaggio.Data = DateTime.Now;
+            messaggio.Testo = rtbMessaggio.Text;
+            messaggio.DestinatarioID = Program.utente.ID;
+            messaggio.MittenteID = Program.io.ID;
+
+            MySqlConnection conn = new MySqlConnection(Program.connectionString);
+            string errore = "";
+            ClsMessaggioBL.Create(ref conn, messaggio, out errore);
+
+            if (string.IsNullOrWhiteSpace(errore))
+            {
+                Program.Messaggi[chatIndex].Add(messaggio);
+
+                // Aggiorna Program.chat all'indice corrente
+                Program.chat = chatIndex;
+
+                PopolaListViewChat();
+                rtbMessaggio.Text = "";
+            }
+            else
+            {
+                MessageBox.Show($"Messaggio non inviato\n{errore}", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+    
         private void btnAggiungiContatto_Click(object sender, EventArgs e)
         {
             FrmAggiungi frmAggiungi = new FrmAggiungi();
@@ -64,32 +75,59 @@ namespace Messaggistica
         {
             //stampo il proprio nome utente sulla form main
             lblNickname.Text = Program.io.Nickname;
-            tmMessaggi.Start();
+
+
             MySqlConnection conn = new MySqlConnection(Program.connectionString);
 
             //prendo i contatti e li metto nel program
             string errore = "";
             Program.Contatti = ClsUtenteBL.PrendiContatti(ref conn, out errore);
             if (string.IsNullOrWhiteSpace(errore))
+            {
                 PopolaListViewContatti();
+                ClsMessaggioBL.RecuperoMessaggi(ref conn, out errore);
+                if (!string.IsNullOrWhiteSpace(errore))
+                    MessageBox.Show($"Errore nel caricamento dei messaggi\n {errore}", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             else
                 MessageBox.Show($"Errore nel caricamento dei contatti\n {errore}", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-            
+            //avvio il timer per il polling
+            tmMessaggi.Interval = 5000; // 5 secondi
+            tmMessaggi.Enabled = true;
+            tmMessaggi.Start();
+
         }
-        
+
 
         #region POPOLA LIST VIEW
         private void PopolaListViewContatti()
         {
-            //popolo la listView
+            // imposto -1 come valore di default
+            long idSelezionato = -1;
+
+            if (lvElencoChat.SelectedItems.Count > 0)
+            {
+                idSelezionato = Convert.ToInt64(lvElencoChat.SelectedItems[0].Tag);
+            }
+
+            lvElencoChat.SelectedIndexChanged -= lvElencoChat_SelectedIndexChanged;
             lvElencoChat.Items.Clear();
-            foreach(ClsUtente utente in Program.Contatti)
+
+            foreach (ClsUtente utente in Program.Contatti)
             {
                 ListViewItem lvi = new ListViewItem(utente.Nickname);
                 lvi.Tag = utente.ID;
                 lvElencoChat.Items.Add(lvi);
+
+                // Controlli se l'ID corrisponde a quello salvato
+                if (idSelezionato != -1 && utente.ID == idSelezionato)
+                {
+                    lvi.Selected = true;
+                }
             }
+
+            lvElencoChat.SelectedIndexChanged += lvElencoChat_SelectedIndexChanged;
         }
 
         private void PopolaListViewChat()
@@ -103,18 +141,20 @@ namespace Messaggistica
                 }
                 foreach (ClsMessaggio m in Program.Messaggi[u])
                 {
+                    ListViewItem lvi;
                     if (m.MittenteID == Program.utente.ID)
                     {
-                        ListViewItem lvi = new ListViewItem(m.Testo);
+                        lvi = new ListViewItem(m.Testo);
                         lvi.SubItems.Add("");
-                        lvChat.Items.Add(lvi);
                     }
                     else
                     {
-                        ListViewItem lvi = new ListViewItem("");
+                        lvi = new ListViewItem("");
                         lvi.SubItems.Add(m.Testo);
-                        lvChat.Items.Add(lvi);
                     }
+
+                    lvi.Tag = m.Id;
+                    lvChat.Items.Add(lvi);
                 }
                 if (lvChat.Items.Count > 0)
                     lvChat.EnsureVisible(lvChat.Items.Count - 1);   //vado all'ultimo messaggio inviato
@@ -176,23 +216,31 @@ namespace Messaggistica
         {
             if (lvElencoChat.SelectedItems.Count > 0)
             {
-                Program.utente = Program.Contatti.FirstOrDefault(u => u.ID == Convert.ToInt64(lvElencoChat.SelectedItems[0].Tag));  //cerco il contatto con quel tag
-                Program.chat = Program.Messaggi.FindIndex(chat => chat.Count > 0 && (chat[0].MittenteID == Program.io.ID && chat[0].DestinatarioID == Program.utente.ID));
-                
-                lblNomeGruppoOChat.Text = Program.utente.Nickname;
-                Program.chat = Program.Messaggi.FindIndex(chat => chat.Count > 0 && (chat[0].MittenteID == Program.io.ID && chat[0].DestinatarioID == Program.utente.ID));
-                
-                lblNomeGruppoOChat.Text = Program.utente.Nickname;
-                PopolaListViewChat();
+                Program.utente = Program.Contatti.FirstOrDefault(u => u.ID == Convert.ToInt64(lvElencoChat.SelectedItems[0].Tag));
+
+                if (Program.utente != null)
+                {
+                    // Usa il metodo unificato
+                    Program.chat = TrovaIndiceChat(Program.utente.ID);
+
+                    // Se non esiste, crea una nuova chat (ma non ancora salvata nel DB)
+                    if (Program.chat == -1)
+                    {
+                        Program.Messaggi.Add(new List<ClsMessaggio>());
+                        Program.chat = Program.Messaggi.Count - 1;
+                    }
+
+                    lblNomeGruppoOChat.Text = Program.utente.Nickname;
+                    PopolaListViewChat();
+                }
             }
             else
             {
-                // Nessuna chat selezionata
                 lblNomeGruppoOChat.Text = "Nessuna chat selezionata";
                 lvChat.Items.Clear();
                 rtbMessaggio.Text = "";
                 Program.utente = null;
-                Program.io2 = true;
+                Program.chat = -1;
             }
         }
 
@@ -204,14 +252,79 @@ namespace Messaggistica
 
         private void tmMessaggi_Tick(object sender, EventArgs e)
         {
-            //ogni 5 secondi controllo se ci sono dei messaggi
+            tmMessaggi.Stop();
+            try
+            {
+                ElaboraPolling();  // CHIAMA UN METODO SEPARATO
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Errore nel timer: {ex.Message}");
+            }
+            finally
+            {
+                tmMessaggi.Start();
+            }
+        }
 
+        private void ElaboraPolling()
+        {
             MySqlConnection conn = new MySqlConnection(Program.connectionString);
             string errore = "";
 
-            ClsMessaggioBL.RecuperoMessaggi(ref conn, out errore);  
+            // Recupera i nuovi messaggi dal database
+            ClsMessaggioBL.RecuperoMessaggi(ref conn, out errore);
+
             if (string.IsNullOrWhiteSpace(errore))
-                PopolaListViewContatti();
+            {
+                // Aggiorna la lista dei contatti
+                Program.Contatti = ClsUtenteBL.PrendiContatti(ref conn, out errore);
+
+                if (string.IsNullOrWhiteSpace(errore))
+                {
+                    PopolaListViewContatti();
+
+                    // Se è selezionata la chat
+                    if (Program.utente != null)
+                    {
+                        // Ricalcola l'indice della chat
+                        int chatIndex = TrovaIndiceChat(Program.utente.ID);
+
+                        if (chatIndex != -1)
+                        {
+                            Program.chat = chatIndex;
+                            PopolaListViewChat();
+                        }
+                    }
+                }
+            }
+        }
+
+        private int TrovaIndiceChat(long utenteID)
+        {
+            // Cerca se esiste già una chat con questo utente
+            int indice = Program.Messaggi.FindIndex(chat => chat.Any(m =>
+                (m.MittenteID == Program.io.ID && m.DestinatarioID == utenteID) ||
+                (m.MittenteID == utenteID && m.DestinatarioID == Program.io.ID)));
+
+            return indice;
+        }
+
+        private void FrmMain_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            //chiudo il programma
+            Application.Exit();
+        }
+
+        private void btnEliminaMessaggio_Click(object sender, EventArgs e)
+        {
+            if (lvChat.SelectedItems.Count > 0)
+            {
+                // Prendo l'id del messaggio
+                long idMessaggioSelezionato = Convert.ToInt64(lvChat.SelectedItems[0].Tag);
+                FrmElimina frmElimina = new FrmElimina(idMessaggioSelezionato);
+                frmElimina.ShowDialog();
+            }
         }
     }
 }

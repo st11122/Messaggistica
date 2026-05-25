@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 namespace Messaggistica
 {
     public class ClsMessaggio
-    {        
+    {
+        private long _id;
         private string _testo;
         private DateTime _data;
         private bool _eliminatoDaMittente;
@@ -16,7 +17,7 @@ namespace Messaggistica
         private long _destinatarioID;
         private long _gruppoID;
 
-
+        public long Id { get => _id; set => _id = value; }
         public string Testo { get => _testo; set => _testo = value; }
         public DateTime Data { get => _data; set => _data = value; }
         public bool EliminatoDaMittente { get => _eliminatoDaMittente; set => _eliminatoDaMittente = value; }
@@ -25,13 +26,15 @@ namespace Messaggistica
         public long MittenteID { get => _mittenteID; set => _mittenteID = value; }
         public long GruppoID { get => _gruppoID; set => _gruppoID = value; }
         
+
         public ClsMessaggio()
         {
            
         }
         
-        public ClsMessaggio(string testo, DateTime data, bool eliminatoDaMittente, bool eliminatoDaDestinatario, long mittenteID, long destinatarioID, long gruppoID)
+        public ClsMessaggio(long id, string testo, DateTime data, bool eliminatoDaMittente, bool eliminatoDaDestinatario, long mittenteID, long destinatarioID, long gruppoID)
         {
+            this._id = id;
             this._testo = testo;
             this._data = data;
             this._eliminatoDaMittente = eliminatoDaMittente;

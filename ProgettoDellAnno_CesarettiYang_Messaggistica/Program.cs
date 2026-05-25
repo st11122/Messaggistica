@@ -9,9 +9,6 @@ namespace Messaggistica
 {
     static class Program
     {
-<<<<<<< Updated upstream
-=======
-
         public static ClsUtente io = new ClsUtente();
         public static ClsUtente utente = null;
         public static string connectionString = Properties.Settings.Default.dbConnString;

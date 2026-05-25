@@ -106,6 +106,12 @@
     <Compile Include="FrmChat.Designer.cs">
       <DependentUpon>FrmChat.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmElimina.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmElimina.Designer.cs">
+      <DependentUpon>FrmElimina.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmImpostazioneUtente.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -132,6 +138,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmChat.resx">
       <DependentUpon>FrmChat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmElimina.resx">
+      <DependentUpon>FrmElimina.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmImpostazioneUtente.resx">
       <DependentUpon>FrmImpostazioneUtente.cs</DependentUpon>

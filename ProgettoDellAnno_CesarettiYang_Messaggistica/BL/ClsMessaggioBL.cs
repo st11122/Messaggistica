@@ -63,62 +63,82 @@ namespace Messaggistica
 
         #region RECUPERO MESSAGGI
 
-        internal static void RecuperoMessaggi (ref MySqlConnection conn,  out string errore)
+        internal static void RecuperoMessaggi(ref MySqlConnection conn, out string errore)
         {
-            Program.Messaggi = new List<List<ClsMessaggio>>();
             errore = String.Empty;
 
             try
             {
                 conn.Open();
-                string query = "SELECT testo, data, eliminato_mittente, eliminato_destinatario, mittenteID, destinatarioID, gruppoID FROM messaggi WHERE mittenteID = @id || destinatarioID = @id";
+                string query = "SELECT * FROM messaggi WHERE mittenteID = @id OR destinatarioID = @id ORDER BY data ASC";
 
                 MySqlCommand cmd = new MySqlCommand(query, conn);
-
                 cmd.Parameters.AddWithValue("@id", Program.io.ID);
 
                 DataTable dt = new DataTable();
                 MySqlDataAdapter da = new MySqlDataAdapter(cmd);
                 da.Fill(dt);
 
+                
+
+                // Reset della struttura delle chat
+                Program.Messaggi = new List<List<ClsMessaggio>>();
+
                 foreach (DataRow row in dt.Rows)
                 {
                     ClsMessaggio messaggio = new ClsMessaggio();
+                    messaggio.Id = Convert.ToInt64(row["ID"]);
                     messaggio.Testo = row["testo"].ToString();
                     messaggio.Data = Convert.ToDateTime(row["data"]);
                     messaggio.EliminatoDaMittente = Convert.ToBoolean(row["eliminato_mittente"]);
                     messaggio.EliminatoDaDestinatario = Convert.ToBoolean(row["eliminato_destinatario"]);
                     messaggio.MittenteID = Convert.ToInt64(row["mittenteID"]);
                     messaggio.DestinatarioID = Convert.ToInt64(row["destinatarioID"]);
+
                     if (row["gruppoID"] == DBNull.Value)
-                        messaggio.GruppoID = -1; //se gruppo è null
+                        messaggio.GruppoID = -1;
                     else
                         messaggio.GruppoID = Convert.ToInt64(row["gruppoID"]);
 
-
-                    //prendo l'id dell'altro utente
-                    long messaggioID = 0;
-                    if (messaggio.MittenteID == Program.io.ID)  
-                        messaggioID = messaggio.DestinatarioID;
-                    else
-                        messaggioID = messaggio.MittenteID;
-
-                    int _chatIndex = Program.Messaggi.FindIndex(i => i.Any(m => m.DestinatarioID == messaggioID || m.MittenteID == messaggioID));   //trovo la chat a cui si riferisce il messaggio
-                    if (_chatIndex == -1)   //se non esiste la creo e aggiungo il messaggio
+                    //controllo che il messaggio non sia stato eliminato per me
+                    if ((messaggio.MittenteID == Program.io.ID && messaggio.EliminatoDaMittente) ||
+                    (messaggio.DestinatarioID == Program.io.ID && messaggio.EliminatoDaDestinatario))
                     {
-                        Program.Messaggi.Add(new List<ClsMessaggio>());
-                        Program.Messaggi[Program.Messaggi.Count - 1].Add(messaggio);
+                        continue; // Salta il messaggio corrente e passa al prossimo record
                     }
-                    else
+
+                    // Determino con chi sto chattando
+                    long altroUtenteID = (messaggio.MittenteID == Program.io.ID) ? messaggio.DestinatarioID : messaggio.MittenteID;
+
+                    // Cerco se esiste già una chat con questo utente
+                    bool chatEsistente = false;
+                    for (int i = 0; i < Program.Messaggi.Count; i++)
                     {
-                        Program.Messaggi[_chatIndex].Add(messaggio);
+                        if (Program.Messaggi[i].Count > 0)
+                        {
+                            ClsMessaggio primoMsg = Program.Messaggi[i][0];
+                            long idAltro = (primoMsg.MittenteID == Program.io.ID) ? primoMsg.DestinatarioID : primoMsg.MittenteID;
+
+                            if (idAltro == altroUtenteID)
+                            {
+                                // Chat trovata, aggiungo il messaggio
+                                Program.Messaggi[i].Add(messaggio);
+                                chatEsistente = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!chatEsistente)
+                    {
+                        // Creo nuova chat
+                        List<ClsMessaggio> nuovaChat = new List<ClsMessaggio>();
+                        nuovaChat.Add(messaggio);
+                        Program.Messaggi.Add(nuovaChat);
                     }
                 }
-
+                //chiudo la connessione
                 conn.Close();
-
-                foreach (List<ClsMessaggio> m in Program.Messaggi)
-                    m.Sort((a, b) => a.Data.CompareTo(b.Data)); //ordino tutti i messaggi per data decrescente
             }
             catch (Exception ex)
             {
@@ -127,6 +147,119 @@ namespace Messaggistica
         }
 
 
+        #endregion
+
+        #region ELIMINA PER TUTTI
+        internal static void AllDelete(ref MySqlConnection conn, long messaggioID, out string errore)
+        {
+            errore = String.Empty;
+            try
+            {
+                //apro la connessione
+                conn.Open();
+
+                //creo la query
+                string sql = "DELETE FROM messaggi WHERE ID = @id";
+
+                //creo l'oggetto command
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@id", messaggioID);
+                //eseguo il comando
+                cmd.ExecuteNonQuery();
+
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                errore = ex.Message;
+            }
+        }
+        #endregion
+
+        #region ELIMINA PER ME
+        internal static void Delete(ref MySqlConnection conn, long messaggioID, out string errore)
+        {
+            errore = String.Empty;
+            try
+            {
+                //apro la connessione
+                conn.Open();
+
+                string sql = "SELECT mittenteID FROM messaggi WHERE ID = @messaggioid";
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@messaggioid", messaggioID);
+                //eseguo il comando
+                object result = cmd.ExecuteScalar();
+
+                if (result != null && result != DBNull.Value) //controllo che ho preso il valore
+                {
+                    long mittenteID = Convert.ToInt64(result);
+                    string sqlUpdate = "";
+
+                    if (mittenteID == Program.io.ID)
+                    {
+                        // Sono il mittente
+                        sqlUpdate = "UPDATE messaggi SET eliminato_mittente = 1 WHERE ID = @messaggioID";
+                    }
+                    else
+                    {
+                        // Sono il destinatario
+                        sqlUpdate = "UPDATE messaggi SET eliminato_destinatario = 1 WHERE ID = @messaggioID";
+                    }
+                    MySqlCommand cmdUpdate = new MySqlCommand(sqlUpdate, conn);
+                    cmdUpdate.Parameters.AddWithValue("@messaggioID", messaggioID);
+                    cmdUpdate.ExecuteNonQuery();
+
+                    //controllo se il messaggio è stato cancellato da entrambi gli utenti
+                    string sqlControlloEliminati = "SELECT eliminato_mittente, eliminato_destinatario FROM messaggi WHERE ID = @id";
+                    MySqlCommand cmdControllo = new MySqlCommand(sqlControlloEliminati, conn);
+                    cmdControllo.Parameters.AddWithValue("@id", messaggioID);
+
+                    bool cancellaDefinitivo = false;
+
+                    // Dichiarazione ed esecuzione del Reader senza using
+                    MySqlDataReader dr = cmdControllo.ExecuteReader();
+
+                    if (dr.Read())
+                    {
+                        bool elimMittente = Convert.ToBoolean(dr["eliminato_mittente"]);
+                        bool elimDestinatario = Convert.ToBoolean(dr["eliminato_destinatario"]);
+
+                        // Se entrambi lo hanno eliminato
+                        if (elimMittente && elimDestinatario)
+                        {
+                            cancellaDefinitivo = true; //dico che va cancellato
+                        }
+                    }
+                    dr.Close();
+
+                    // Se entrambi lo hanno eliminato il messaggio
+                    if (cancellaDefinitivo)
+                    {
+                        //creo la query
+                        string sqlDelete = "DELETE FROM messaggi WHERE ID = @id";
+
+                        //creo l'oggetto command
+                        MySqlCommand cmdDelete = new MySqlCommand(sql, conn);
+                        cmd.Parameters.AddWithValue("@id", messaggioID);
+                        //eseguo il comando
+                        cmd.ExecuteNonQuery();
+                    }
+
+
+
+
+                }
+                else
+                    errore = "Messaggio non trovato";
+
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                errore = ex.Message;
+            }
+        }
         #endregion
 
         #endregion

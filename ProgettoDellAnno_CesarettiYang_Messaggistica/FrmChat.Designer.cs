@@ -1,4 +1,4 @@
-namespace Messaggistica
+﻿namespace Messaggistica
 {
     partial class FrmMain
     {
@@ -44,8 +44,8 @@ namespace Messaggistica
             this.rtbMessaggio = new System.Windows.Forms.RichTextBox();
             this.btnInvia = new System.Windows.Forms.Button();
             this.btnAggiungi = new System.Windows.Forms.Button();
-            this.btnTestDiConnessione = new System.Windows.Forms.Button();
-            this.ptImpostazioni = new System.Windows.Forms.PictureBox();
+            this.tmMessaggi = new System.Windows.Forms.Timer(this.components);
+            this.btnEliminaMessaggio = new System.Windows.Forms.Button();
             this.pnlElencoChat.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ptImpostazioni)).BeginInit();
             this.SuspendLayout();
@@ -66,11 +66,8 @@ namespace Messaggistica
             this.pnlElencoChat.Size = new System.Drawing.Size(200, 450);
             this.pnlElencoChat.TabIndex = 0;
             // 
-<<<<<<< Updated upstream
-=======
             // btnCreaGruppo
             // 
-            this.btnCreaGruppo.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.btnCreaGruppo.BackColor = System.Drawing.Color.Transparent;
             this.btnCreaGruppo.Location = new System.Drawing.Point(69, 386);
             this.btnCreaGruppo.Name = "btnCreaGruppo";
@@ -89,10 +86,9 @@ namespace Messaggistica
             this.ptImpostazioni.TabIndex = 0;
             this.ptImpostazioni.TabStop = false;
             this.ptImpostazioni.Click += new System.EventHandler(this.ptImpostazioni_Click);
-            //
+            // 
             // btnElimina
             // 
-            this.btnElimina.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.btnElimina.BackColor = System.Drawing.Color.Transparent;
             this.btnElimina.Location = new System.Drawing.Point(3, 386);
             this.btnElimina.Name = "btnElimina";
@@ -103,7 +99,6 @@ namespace Messaggistica
             // 
             // btnAggiungiContatto
             // 
-            this.btnAggiungiContatto.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.btnAggiungiContatto.BackColor = System.Drawing.Color.Transparent;
             this.btnAggiungiContatto.Location = new System.Drawing.Point(137, 386);
             this.btnAggiungiContatto.Name = "btnAggiungiContatto";
@@ -126,8 +121,6 @@ namespace Messaggistica
             // 
             // lvElencoChat
             // 
-            this.lvElencoChat.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
             this.lvElencoChat.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.chChat});
             this.lvElencoChat.FullRowSelect = true;
@@ -148,12 +141,10 @@ namespace Messaggistica
             // 
             // lvChat
             // 
-            this.lvChat.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.lvChat.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.chMessaggio1,
             this.chMessaggio2});
+            this.lvChat.FullRowSelect = true;
             this.lvChat.HideSelection = false;
             this.lvChat.Location = new System.Drawing.Point(203, 66);
             this.lvChat.Name = "lvChat";
@@ -165,14 +156,12 @@ namespace Messaggistica
             // chMessaggio1
             // 
             this.chMessaggio1.Text = "Messaggio";
-            this.chMessaggio1.Width = 274;
+            this.chMessaggio1.Width = 276;
             // 
             // chMessaggio2
             // 
             this.chMessaggio2.Text = "Messaggio";
-            this.chMessaggio2.Width = 253;
-            this.chMessaggio2.Width = 255;
-            this.chMessaggio2.Width = 271;
+            this.chMessaggio2.Width = 280;
             // 
             // lblNomeGruppoOChat
             // 
@@ -188,20 +177,6 @@ namespace Messaggistica
             // 
             // rtbMessaggio
             // 
-<<<<<<< Updated upstream
-            this.richTextBox1.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.richTextBox1.Location = new System.Drawing.Point(210, 386);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(465, 52);
-            this.richTextBox1.TabIndex = 4;
-            this.richTextBox1.Text = "Testo";
-            // 
-            // btnInvia
-            // 
-            this.btnInvia.Location = new System.Drawing.Point(690, 386);
-=======
-            this.rtbMessaggio.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.rtbMessaggio.ForeColor = System.Drawing.Color.Black;
             this.rtbMessaggio.Location = new System.Drawing.Point(210, 386);
             this.rtbMessaggio.Name = "rtbMessaggio";
@@ -212,23 +187,8 @@ namespace Messaggistica
             // 
             // btnInvia
             // 
-            this.btnInvia.Location = new System.Drawing.Point(690, 386);
-            this.rtbMessaggio.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.rtbMessaggio.ForeColor = System.Drawing.Color.Black;
-            this.rtbMessaggio.Location = new System.Drawing.Point(210, 386);
-            this.rtbMessaggio.Name = "rtbMessaggio";
-            this.rtbMessaggio.Size = new System.Drawing.Size(465, 52);
-            this.rtbMessaggio.TabIndex = 4;
-            this.rtbMessaggio.Text = "";
-            this.rtbMessaggio.KeyDown += new System.Windows.Forms.KeyEventHandler(this.rtbMessaggio_KeyDown);
-            // 
-            // btnInvia
-            // 
-            this.btnInvia.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnInvia.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnInvia.Location = new System.Drawing.Point(681, 386);
->>>>>>> Stashed changes
             this.btnInvia.Name = "btnInvia";
             this.btnInvia.Size = new System.Drawing.Size(104, 52);
             this.btnInvia.TabIndex = 5;
@@ -239,36 +199,31 @@ namespace Messaggistica
             // btnAggiungi
             // 
             this.btnAggiungi.BackColor = System.Drawing.Color.Transparent;
-            this.btnAggiungi.Location = new System.Drawing.Point(725, 12);
+            this.btnAggiungi.Location = new System.Drawing.Point(659, 12);
             this.btnAggiungi.Name = "btnAggiungi";
             this.btnAggiungi.Size = new System.Drawing.Size(60, 48);
             this.btnAggiungi.TabIndex = 8;
             this.btnAggiungi.Text = "Aggiungi";
             this.btnAggiungi.UseVisualStyleBackColor = false;
-<<<<<<< Updated upstream
-           
-=======
-            this.btnAggiungi.Visible = false;
-            this.btnAggiungi.Click += new System.EventHandler(this.btnAggiungi_Click);
-            // 
-            // tmMessaggi
-            // 
-            this.btnTestDiConnessione.BackColor = System.Drawing.Color.Transparent;
-            this.btnTestDiConnessione.Location = new System.Drawing.Point(471, 12);
-            this.btnTestDiConnessione.Name = "btnTestDiConnessione";
-            this.btnTestDiConnessione.Size = new System.Drawing.Size(60, 48);
-            this.btnTestDiConnessione.TabIndex = 9;
-            this.btnTestDiConnessione.Text = "Test di connessione";
-            this.btnTestDiConnessione.UseVisualStyleBackColor = false;
-            this.btnTestDiConnessione.Click += new System.EventHandler(this.btnTestDiConnessione_Click);
             this.btnAggiungi.Visible = false;
             this.btnAggiungi.Click += new System.EventHandler(this.btnAggiungi_Click);
             // 
             // tmMessaggi
             // 
             this.tmMessaggi.Enabled = true;
-            this.tmMessaggi.Interval = 5000;
+            this.tmMessaggi.Interval = 3000;
             this.tmMessaggi.Tick += new System.EventHandler(this.tmMessaggi_Tick);
+            // 
+            // btnEliminaMessaggio
+            // 
+            this.btnEliminaMessaggio.BackColor = System.Drawing.Color.Transparent;
+            this.btnEliminaMessaggio.Location = new System.Drawing.Point(725, 12);
+            this.btnEliminaMessaggio.Name = "btnEliminaMessaggio";
+            this.btnEliminaMessaggio.Size = new System.Drawing.Size(60, 48);
+            this.btnEliminaMessaggio.TabIndex = 9;
+            this.btnEliminaMessaggio.Text = "Elimina";
+            this.btnEliminaMessaggio.UseVisualStyleBackColor = false;
+            this.btnEliminaMessaggio.Click += new System.EventHandler(this.btnEliminaMessaggio_Click);
             // 
             // FrmMain
             // 
@@ -276,7 +231,7 @@ namespace Messaggistica
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.btnTestDiConnessione);
+            this.Controls.Add(this.btnEliminaMessaggio);
             this.Controls.Add(this.btnAggiungi);
             this.Controls.Add(this.btnInvia);
             this.Controls.Add(this.rtbMessaggio);
@@ -285,6 +240,7 @@ namespace Messaggistica
             this.Controls.Add(this.pnlElencoChat);
             this.Name = "FrmMain";
             this.Text = "Messaggistica";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmMain_FormClosed);
             this.Load += new System.EventHandler(this.FrmMain_Load);
             this.pnlElencoChat.ResumeLayout(false);
             this.pnlElencoChat.PerformLayout();
@@ -298,12 +254,7 @@ namespace Messaggistica
 
         private System.Windows.Forms.Panel pnlElencoChat;
         private System.Windows.Forms.ListView lvChat;
-<<<<<<< Updated upstream
-        private System.Windows.Forms.ColumnHeader chMessaggioInterlocutore;
-        private System.Windows.Forms.Label label2;
-=======
         private System.Windows.Forms.Label lblNickname;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ColumnHeader chMessaggio1;
         private System.Windows.Forms.ColumnHeader chMessaggio2;
         private System.Windows.Forms.Label lblNomeGruppoOChat;
@@ -313,12 +264,11 @@ namespace Messaggistica
         private System.Windows.Forms.Button btnAggiungiContatto;
         private System.Windows.Forms.Button btnAggiungi;
         private System.Windows.Forms.PictureBox ptImpostazioni;
-<<<<<<< Updated upstream
-=======
         private System.Windows.Forms.Button btnCreaGruppo;
         private System.Windows.Forms.ListView lvElencoChat;
         private System.Windows.Forms.ColumnHeader chChat;
         private System.Windows.Forms.Timer tmMessaggi;
+        private System.Windows.Forms.Button btnEliminaMessaggio;
     }
 }
 
