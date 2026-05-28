@@ -16,6 +16,7 @@ namespace Messaggistica
         public static bool io2;
         public static List<List<ClsMessaggio>> Messaggi = new List<List<ClsMessaggio>>();
         public static int chat = -1;
+        public static List<ClsBloccare> bloccati = new List<ClsBloccare>();
         
         /// <summary>
         /// Punto di ingresso principale dell'applicazione.
