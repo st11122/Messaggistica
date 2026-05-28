@@ -53,12 +53,16 @@ namespace Messaggistica
 
                 if (_righeInserite == 0 && _righeInserite2 == 0)
                     errore = "Nessuna riga inserita";
-
-                conn.Close();
+                
             }
             catch (Exception ex)
             {
                 errore = ex.Message;
+            }
+            finally
+            {
+                //chiudo la connessione
+                conn.Close();
             }
         }
         #endregion
@@ -89,12 +93,16 @@ namespace Messaggistica
                 //controllo se le modifiche sono state apportate
                 if (_righeModificate < 1)
                     errore = "Modifica non apportata";
-
-                conn.Close();
+                
             }
             catch (Exception ex)
             {
                 errore = ex.Message;
+            }
+            finally
+            {
+                //chiudo la connessione
+                conn.Close();
             }
         }
         #endregion
