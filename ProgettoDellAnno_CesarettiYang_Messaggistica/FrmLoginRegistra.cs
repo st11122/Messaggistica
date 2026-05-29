@@ -103,8 +103,6 @@ namespace Messaggistica
                     MessageBox.Show("Accesso eseguito con successo!");
                     Program.io.Password = tbPassword.Text;
                 }
-                else
-                    MessageBox.Show($"Accesso non eseguito {errore}");
             }
 
             if (string.IsNullOrWhiteSpace(errore))

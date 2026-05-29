@@ -47,12 +47,16 @@ namespace Messaggistica
                 int numRec = cmd.ExecuteNonQuery();
                 if (numRec == 1)
                     ID = cmd.LastInsertedId; //ottengo l'id automaticamente
-
-                conn.Close();
+                
             }
             catch (Exception ex)
             {
                 errore = ex.Message;
+            }
+            finally
+            {
+                //chiudo la connessione
+                conn.Close();
             }
 
             return ID;

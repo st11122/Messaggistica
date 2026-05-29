@@ -47,9 +47,37 @@ namespace Messaggistica
                 dtpDataDiNascita.Value = Program.utente.DataDiNascita;
                 rtbBiografia.Text = Program.utente.Descrizione;
                 lblImpostazioni.Text = "INFORMAZIONI UTENTE ID: " + Program.utente.ID;
+                // Controllo se l'utente è bloccato
+                bool isBloccato = ControllaSeBloccato(Program.utente.ID);
+
+                if (isBloccato)
+                {
+                    btnBlocca.Text = "Sblocca";
+                    btnBlocca.BackColor = Color.LightGreen;
+                }
+                else
+                {
+                    btnBlocca.Text = "Blocca";
+                    btnBlocca.BackColor = Color.LightSalmon;
+                }
+
+                btnBlocca.Visible = true;
+            }
+        }
+        
+        private bool ControllaSeBloccato(long utenteID)
+        {
+            bool isBloccato = false;
+            // Controlla nella lista dei bloccati se l'utente corrente è bloccato
+            foreach (ClsBloccare bloccato in Program.bloccati)
+            {
+                if (bloccato.Bloccato == utenteID && bloccato.BloccatoDa == Program.io.ID)
+                    isBloccato = true;
             }
 
+            return isBloccato;
         }
+        
 
         private void cbMostraPassword_CheckedChanged(object sender, EventArgs e)
         {
@@ -94,18 +122,42 @@ namespace Messaggistica
             //blocco l'uente
             MySqlConnection conn = new MySqlConnection(Program.connectionString);
 
+            bool isBloccato = ControllaSeBloccato(Program.utente.ID);
+            string errore = "";
 
-            ClsBloccare bloccare = new ClsBloccare();
-            bloccare.Bloccato = Program.utente.ID;
-            bloccare.BloccatoDa = Program.io.ID;
-            ClsBloccareBL.Bloccare(conn, bloccare, out string errore);
-            if (string.IsNullOrWhiteSpace(errore))
-                MessageBox.Show("Utente bloccato");
+            if (isBloccato)
+            {
+                // Sblocca l'utente
+                ClsBloccareBL.Sblocca(ref conn, Program.utente.ID, out errore);
+                if (string.IsNullOrWhiteSpace(errore))
+                {
+                    MessageBox.Show("Utente sbloccato");
+                    // Aggiorna la lista dei bloccati
+                    ClsBloccareBL.GetBlocked(ref conn, out errore);
+                    btnBlocca.Text = "Blocca";
+                    btnBlocca.BackColor = Color.LightSalmon;
+                }
+                else
+                {
+                    MessageBox.Show($"Utente non sbloccato\n {errore}", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
             else
-                MessageBox.Show($"Utente non bloccato\n {errore}", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            {
 
+                ClsBloccare bloccare = new ClsBloccare();
+                bloccare.Bloccato = Program.utente.ID;
+                bloccare.BloccatoDa = Program.io.ID;
+                ClsBloccareBL.Bloccare(ref conn, bloccare, out errore);
+                btnBlocca.Text = "Sblocca";
+                btnBlocca.BackColor = Color.LightGreen;
+                if (string.IsNullOrWhiteSpace(errore))
+                    MessageBox.Show("Utente bloccato");
+                else
+                    MessageBox.Show($"Utente non bloccato\n {errore}", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
         }
-
         private void btnAnnulla_Click(object sender, EventArgs e)
         {
             this.Close();
