@@ -23,51 +23,6 @@ namespace Messaggistica
 
         #region METODI
 
-        #region PRENDO UTENTI
-        public List<ClsUtente> getUtenti(ref string errore)
-        {
-            DataTable dt = null;
-            List<ClsUtente> listUtenti = null;
-
-            try
-            {
-                //Apertura connessione
-                _conn.Open();
-
-                string query = "SELECT * FROM utenti";
-
-                //Creo l'oggetto dataadapter
-                MySqlDataAdapter da = new MySqlDataAdapter(query, _conn);
-
-                //Allineo il DA con i risultati della query
-                dt = new DataTable();
-                da.Fill(dt);
-
-                listUtenti = new List<ClsUtente>();
-
-                for (int i = 0; i < dt.Rows.Count; i++)
-                {
-                    /*ClsUtente ag = new ClsUtente(
-                    (long)(dt.Rows[i]["ID"]), 
-                    dt.Rows[i]["Descrizione"].ToString(), 
-                    dt.Rows[i]["Nickname"].ToString(), 
-                    (DateTime)(dt.Rows[i]["DataDiNascita"]), 
-                    Convert.ToBoolean(dt.Rows[i]["Admin"]));
-                    listUtenti.Add(ag);*/
-                }
-
-                //Chiusura connessione (posso gestirla nella finally o anticiparla visto che lavoro con il DataTable)
-                _conn.Close();
-
-            }
-            catch (Exception ex)
-            {
-                errore = ex.Message;
-            }
-            return listUtenti;
-        }
-        #endregion
-
         #region CREARE
         internal static long Create(ref MySqlConnection conn, ClsUtente utente, out string errore)
         {
@@ -97,12 +52,16 @@ namespace Messaggistica
                 int numRec = cmd.ExecuteNonQuery();
                 if (numRec == 1)
                     ID = cmd.LastInsertedId; //ottengo l'id automaticamente
-
-                conn.Close();
+                
             }
             catch (Exception ex)
             {
                 errore = ex.Message;
+            }
+            finally
+            {
+                //chiudo la connessione
+                conn.Close();
             }
 
             return ID;
@@ -152,11 +111,15 @@ namespace Messaggistica
                 {
                     errore = "Nickname o password errati";
                 }
-                conn.Close();
             }
             catch (Exception ex)
             {
                 errore = ex.Message;
+            }
+            finally
+            {
+                //chiudo la connessione
+                conn.Close();
             }
 
             return io;
@@ -204,13 +167,16 @@ namespace Messaggistica
                         _listaUtenti.Add(_utente);
                     }
                 }
-
-                //chiudo la connessione
-                conn.Close();
+                
             }
             catch (Exception ex)
             {
                 errore = ex.Message;
+            }
+            finally
+            {
+                //chiudo la connessione
+                conn.Close();
             }
 
             return _listaUtenti;
@@ -251,13 +217,17 @@ namespace Messaggistica
 
                     Contatti.Add(contatto);
                 }
-
-                conn.Close();
+                
 
             }
             catch (Exception ex)
             {
                 errore = ex.Message;
+            }
+            finally
+            {
+                //chiudo la connessione
+                conn.Close();
             }
 
             return Contatti;
@@ -295,12 +265,15 @@ namespace Messaggistica
                     errore = "Modifica non apportata";
                 else
                     Program.io = io;    //modifico il mio utente
-
-                conn.Close();
             }
             catch (Exception ex)
             {
                 errore = ex.Message;
+            }
+            finally
+            {
+                //chiudo la connessione
+                conn.Close();
             }
         }
 

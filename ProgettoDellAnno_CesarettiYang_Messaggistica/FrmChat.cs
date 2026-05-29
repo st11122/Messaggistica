@@ -95,9 +95,10 @@ namespace Messaggistica
             if (string.IsNullOrWhiteSpace(errore))
             {
                 PopolaListViewContatti();
+                ClsBloccareBL.GetBlocked(ref conn, out errore);
                 ClsMessaggioBL.RecuperoMessaggi(ref conn, out errore);
                 if (!string.IsNullOrWhiteSpace(errore))
-                    MessageBox.Show($"Errore nel caricamento dei messaggi\n {errore}", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(errore, "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
                 MessageBox.Show($"Errore nel caricamento dei contatti\n {errore}", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -129,7 +130,8 @@ namespace Messaggistica
                 ListViewItem lvi = new ListViewItem(utente.Nickname);
                 lvi.Tag = utente.ID;
                 lvElencoChat.Items.Add(lvi);
-
+                if (ControllaSeBloccato(utente.ID))
+                    lvi.BackColor = Color.Salmon;
                 // Controlli se l'ID corrisponde a quello salvato
                 if (idSelezionato != -1 && utente.ID == idSelezionato)
                 {
@@ -308,6 +310,10 @@ namespace Messaggistica
                     }
                 }
             }
+
+            ClsBloccareBL.GetBlocked(ref conn, out errore);
+            if (string.IsNullOrWhiteSpace(errore))
+                PopolaListViewContatti();
         }
 
         private int TrovaIndiceChat(long utenteID)
@@ -344,19 +350,6 @@ namespace Messaggistica
             foreach (ClsBloccare bloccato in Program.bloccati)
             {
                 if (bloccato.Bloccato == utenteID && bloccato.BloccatoDa == Program.io.ID)
-                    isBloccato = true;
-            }
-
-            return isBloccato;
-        }
-
-        private bool ControllaSeSonoBloccato(long utenteID)
-        {
-            bool isBloccato = false;
-            // Controlla nella lista dei bloccati se l'utente corrente � bloccato
-            foreach (ClsBloccare bloccato in Program.bloccati)
-            {
-                if (bloccato.BloccatoDa == utenteID && bloccato.Bloccato == Program.io.ID)
                     isBloccato = true;
             }
 
