@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmCreaGruppo));
             this.btnCreaAggiungi = new System.Windows.Forms.Button();
             this.btnAnnulla = new System.Windows.Forms.Button();
             this.lblID = new System.Windows.Forms.Label();
@@ -170,6 +171,7 @@
             this.Controls.Add(this.lblID);
             this.Controls.Add(this.btnAnnulla);
             this.Controls.Add(this.btnCreaAggiungi);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FrmCreaGruppo";
             this.Text = "Crea gruppo";
             this.Load += new System.EventHandler(this.FrmCreaGruppo_Load);

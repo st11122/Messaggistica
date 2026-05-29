@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmImpostazioneUtente));
             this.cbMostraPassword = new System.Windows.Forms.CheckBox();
             this.lblPassword = new System.Windows.Forms.Label();
             this.tbPassword = new System.Windows.Forms.TextBox();
@@ -192,6 +193,7 @@
             this.Controls.Add(this.lbDataDiNascita);
             this.Controls.Add(this.lblNickname);
             this.Controls.Add(this.tbNickname);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FrmImpostazioneUtente";
             this.Text = "FrmImpostazioneUtente";
             this.Load += new System.EventHandler(this.FrmImpostazioneUtente_Load);

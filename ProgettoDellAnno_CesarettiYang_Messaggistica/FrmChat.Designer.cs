@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
             this.pnlElencoChat = new System.Windows.Forms.Panel();
             this.btnCreaGruppo = new System.Windows.Forms.Button();
             this.ptImpostazioni = new System.Windows.Forms.PictureBox();
@@ -238,6 +239,7 @@
             this.Controls.Add(this.lblNomeGruppoOChat);
             this.Controls.Add(this.lvChat);
             this.Controls.Add(this.pnlElencoChat);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FrmMain";
             this.Text = "Messaggistica";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmMain_FormClosed);
