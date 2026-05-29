@@ -20,41 +20,51 @@ namespace Messaggistica
 
         private void btnInvia_Click(object sender, EventArgs e)
         {
-
-            // RICERCA CORRETTA DELLA CHAT PRIMA DI INVIARE
-            int chatIndex = TrovaIndiceChat(Program.utente.ID);
-
-            if (chatIndex == -1)
+            if (!ControllaSeSonoBloccato(Program.utente.ID))
             {
-                // Nuova chat
-                Program.Messaggi.Add(new List<ClsMessaggio>());
-                chatIndex = Program.Messaggi.Count - 1;
-            }
+                if (!ControllaSeBloccato(Program.utente.ID))
+                {
+                    // Cerco l'indice della chat
+                    int chatIndex = TrovaIndiceChat(Program.utente.ID);
 
-            ClsMessaggio messaggio = new ClsMessaggio();
-            messaggio.Data = DateTime.Now;
-            messaggio.Testo = rtbMessaggio.Text;
-            messaggio.DestinatarioID = Program.utente.ID;
-            messaggio.MittenteID = Program.io.ID;
+                    if (chatIndex == -1)
+                    {
+                        // Nuova chat
+                        Program.Messaggi.Add(new List<ClsMessaggio>());
+                        chatIndex = Program.Messaggi.Count - 1;
+                    }
 
-            MySqlConnection conn = new MySqlConnection(Program.connectionString);
-            string errore = "";
-            ClsMessaggioBL.Create(ref conn, messaggio, out errore);
+                    ClsMessaggio messaggio = new ClsMessaggio();
+                    messaggio.Data = DateTime.Now;
+                    messaggio.Testo = rtbMessaggio.Text;
+                    messaggio.DestinatarioID = Program.utente.ID;
+                    messaggio.MittenteID = Program.io.ID;
 
-            if (string.IsNullOrWhiteSpace(errore))
-            {
-                Program.Messaggi[chatIndex].Add(messaggio);
+                    MySqlConnection conn = new MySqlConnection(Program.connectionString);
+                    string errore = "";
+                    ClsMessaggioBL.Create(ref conn, messaggio, out errore);
 
-                // Aggiorna Program.chat all'indice corrente
-                Program.chat = chatIndex;
+                    if (string.IsNullOrWhiteSpace(errore))
+                    {
+                        Program.Messaggi[chatIndex].Add(messaggio);
 
-                PopolaListViewChat();
-                rtbMessaggio.Text = "";
+                        // Aggiorna Program.chat all'indice corrente
+                        Program.chat = chatIndex;
+
+                        PopolaListViewChat();
+                        rtbMessaggio.Text = "";
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Messaggio non inviato\n{errore}", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                else
+                    MessageBox.Show("Hai bloccato questo contatto", "Attenzione", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
             else
-            {
-                MessageBox.Show($"Messaggio non inviato\n{errore}", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+                MessageBox.Show("Questo utente ti ha bloccato", "Attenzione", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+            
         }
 
     
@@ -111,7 +121,7 @@ namespace Messaggistica
                 idSelezionato = Convert.ToInt64(lvElencoChat.SelectedItems[0].Tag);
             }
 
-            lvElencoChat.SelectedIndexChanged -= lvElencoChat_SelectedIndexChanged;
+            lvElencoChat.SelectedIndexChanged -= lvElencoChat_SelectedIndexChanged; //disattivo la selezione dell'utente per evitare errori durante il caricamento dei messaggi
             lvElencoChat.Items.Clear();
 
             foreach (ClsUtente utente in Program.Contatti)
@@ -127,7 +137,7 @@ namespace Messaggistica
                 }
             }
 
-            lvElencoChat.SelectedIndexChanged += lvElencoChat_SelectedIndexChanged;
+            lvElencoChat.SelectedIndexChanged += lvElencoChat_SelectedIndexChanged; //riseleziono l'elemetno
         }
 
         private void PopolaListViewChat()
@@ -284,7 +294,7 @@ namespace Messaggistica
                 {
                     PopolaListViewContatti();
 
-                    // Se è selezionata la chat
+                    // Se ï¿½ selezionata la chat
                     if (Program.utente != null)
                     {
                         // Ricalcola l'indice della chat
@@ -302,7 +312,7 @@ namespace Messaggistica
 
         private int TrovaIndiceChat(long utenteID)
         {
-            // Cerca se esiste già una chat con questo utente
+            // Cerca se esiste giï¿½ una chat con questo utente
             int indice = Program.Messaggi.FindIndex(chat => chat.Any(m =>
                 (m.MittenteID == Program.io.ID && m.DestinatarioID == utenteID) ||
                 (m.MittenteID == utenteID && m.DestinatarioID == Program.io.ID)));
@@ -326,5 +336,32 @@ namespace Messaggistica
                 frmElimina.ShowDialog();
             }
         }
+
+        private bool ControllaSeBloccato(long utenteID)
+        {
+            bool isBloccato = false;
+            // Controlla nella lista dei bloccati se l'utente corrente ï¿½ bloccato
+            foreach (ClsBloccare bloccato in Program.bloccati)
+            {
+                if (bloccato.Bloccato == utenteID && bloccato.BloccatoDa == Program.io.ID)
+                    isBloccato = true;
+            }
+
+            return isBloccato;
+        }
+
+        private bool ControllaSeSonoBloccato(long utenteID)
+        {
+            bool isBloccato = false;
+            // Controlla nella lista dei bloccati se l'utente corrente ï¿½ bloccato
+            foreach (ClsBloccare bloccato in Program.bloccati)
+            {
+                if (bloccato.BloccatoDa == utenteID && bloccato.Bloccato == Program.io.ID)
+                    isBloccato = true;
+            }
+
+            return isBloccato;
+        }
+
     }
 }

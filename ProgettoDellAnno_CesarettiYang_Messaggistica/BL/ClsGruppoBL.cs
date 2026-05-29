@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MySqlConnector;
 
-namespace Messaggistica.BL
+namespace Messaggistica
 {
     class ClsGruppoBL
     {
@@ -33,7 +33,7 @@ namespace Messaggistica.BL
                 conn.Open();
 
                 //creo la query
-                string sql = "INSERT INTO messaggi (nome, descrizione) VALUES (@nome, @descrizione)";
+                string sql = "INSERT INTO gruppi (nome, descrizione) VALUES (@nome, @descrizione)";
 
                 //creo l'oggetto command
 
@@ -59,6 +59,44 @@ namespace Messaggistica.BL
         }
         #endregion
 
+        #region  AGGIUNGI
+        internal static void Unire (ref MySqlConnection conn, List<long> utentiId, long gruppoId, out string errore)
+        {
+            errore = string.Empty;
+
+            try
+            {
+                //apro la connessione
+                conn.Open();
+
+                foreach(long utenteId in utentiId)
+                {
+                    //creo la query
+                    string sql = "INSERT INTO unire (data_ingresso, utenteid, gruppoid) VALUES (@data, @utenteid, @gruppoid)";
+
+                    //creo l'oggetto command
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+
+                    //assegno i valori
+                    cmd.Parameters.AddWithValue("@data", DateTime.Now);
+                    cmd.Parameters.AddWithValue("@utenteid", utenteId);
+                    cmd.Parameters.AddWithValue("@gruppoid", gruppoId);
+
+                    //eseguo il comando
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                errore = ex.Message;
+            }
+            finally
+            {
+                //chiudo la connessione
+                conn.Close();
+            }
+        }
+        #endregion
         #endregion
     }
 }
