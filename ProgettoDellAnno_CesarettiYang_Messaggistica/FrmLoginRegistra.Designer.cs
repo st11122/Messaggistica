@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmLoginRegistra));
             this.tbNickname = new System.Windows.Forms.TextBox();
             this.lblNickname = new System.Windows.Forms.Label();
             this.btnRegistraLogin = new System.Windows.Forms.Button();
@@ -206,6 +207,7 @@
             this.Controls.Add(this.btnRegistraLogin);
             this.Controls.Add(this.lblNickname);
             this.Controls.Add(this.tbNickname);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FrmLoginRegistra";
             this.Text = "AccediRegistra";
             this.ResumeLayout(false);

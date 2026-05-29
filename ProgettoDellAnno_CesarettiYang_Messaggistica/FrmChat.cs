@@ -356,5 +356,21 @@ namespace Messaggistica
             return isBloccato;
         }
 
+<<<<<<<<< Temporary merge branch 1
+=========
+        private bool ControllaSeSonoBloccato(long utenteID)
+        {
+            bool isBloccato = false;
+            // Controlla nella lista dei bloccati se l'utente corrente � bloccato
+            foreach (ClsBloccare bloccato in Program.bloccati)
+            {
+                if (bloccato.BloccatoDa == utenteID && bloccato.Bloccato == Program.io.ID)
+                    isBloccato = true;
+            }
+
+            return isBloccato;
+        }
+
+>>>>>>>>> Temporary merge branch 2
     }
 }

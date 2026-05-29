@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmElimina));
             this.btnMe = new System.Windows.Forms.Button();
             this.btnTutti = new System.Windows.Forms.Button();
             this.lblDomanda = new System.Windows.Forms.Label();
@@ -75,6 +76,7 @@
             this.Controls.Add(this.btnTutti);
             this.Controls.Add(this.btnMe);
             this.ForeColor = System.Drawing.Color.White;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FrmElimina";
             this.Text = "Elimina";
             this.Load += new System.EventHandler(this.Elimina_Load);

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmAggiungi));
             this.tbNickname = new System.Windows.Forms.TextBox();
             this.lblNome = new System.Windows.Forms.Label();
             this.lblIDcontatto = new System.Windows.Forms.Label();
@@ -114,8 +115,9 @@
             this.Controls.Add(this.lblIDcontatto);
             this.Controls.Add(this.btnAnnulla);
             this.Controls.Add(this.btnAggiungi);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FrmAggiungi";
-            this.Text = "FrmAggiungi";
+            this.Text = "Aggiungi";
             ((System.ComponentModel.ISupportInitialize)(this.nudIDcontatto)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
